@@ -11,7 +11,7 @@ import random
 @login_required
 def study_list(request):
 	user = UserProfile.objects.get(user = request.user)
-	return render(request, 'clips_app/study_list.html', {'user':user})
+	return render(request, 'clips_app/study_list.html', {'user_prof':user})
 
 
 @login_required

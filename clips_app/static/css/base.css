@@ -20,10 +20,24 @@ body{
     flex-direction: column;
 }
 
+.right{
+	float: right;
+}
+
 .page-header{
 	font-weight: lighter;
 	font-size: 3em;
 	padding: 0.5em 1em;
+}
+
+#logout{
+	font-size: 1rem;	
+	margin: 1em 2em;
+	
+}
+
+#logout a{
+	text-decoration: underline;
 }
 
 .card {

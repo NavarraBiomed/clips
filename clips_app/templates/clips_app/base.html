@@ -13,6 +13,7 @@
     <div id="wrapper">
         <div class="page-header green">
             <a href="/">Studies </a>
+            <div id="logout" class="right">{% if user.is_authenticated %}{{user}} (<a href="/admin/logout/">Log out</a>){% endif %}</div>
         </div>
         <div id="container">
                 {% block content %}
