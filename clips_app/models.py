@@ -1,13 +1,13 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 
 
 _SEX = (
-	(1, "Man"),
-	(2, "Woman")
+	(1, "Male"),
+	(2, "Female")
 	)
 
 _TRAMOS_EDAD = (
@@ -53,7 +53,7 @@ _ANTIPLATELET = (
 	(1, "Antiplatelet"),
 	(2, "Double antiplatelet"),
 	(3, "Warfarin acenocumarol"),
-	(4, "Debigatran (new antic)")
+	(4, "Dabigatran (new antic)")
 	)
 
 _PARIS = (
@@ -87,7 +87,7 @@ _LOCATION = (
 	)
 
 _HIGH_DEFINITION = (
-	(1, "Conventinoal endoscope"),
+	(1, "Conventional endoscope"),
 	(2, "High definition"),
 	(3, "Optic magnification")
 	)
@@ -143,9 +143,9 @@ _HISTOLOGY = (
 	)
 
 _HISTOLOGY_SIMP = (
-	(1, "adenoma"),
+	(1, "Adenoma"),
 	(2, "HGD-Imucosal"),
-	(3, "Invasive"),
+	(3, "Invasive adenoma"),
 	(4, "Serrated"),
 	(5, "HGD-Imucosal serrated"),
 	(6, "Invasive serrated"),
@@ -217,7 +217,7 @@ _ARGON_PC = (
 
 _CLIPS = (
 	(0, "Control group"),
-	(1, "Yes")
+	(1, "Treatment group")
 	)
  
 _CLIPS_CONTROL = (
@@ -230,10 +230,10 @@ _CLIPS_TREAT_GROUP = (
 	(2, "Complee closure without complete mucosal apposition"),
 	(3, "Total failed closure"),
 	(4, "Partial failed closure"),
-	(5, "Not tired closure")
+	(5, "Not tried closure")
 	)
 
-_NO_TIRED = (
+_NOT_TRIED = (
 	(1, "Big size"),
 	(2, "Difficult location"),
 	(3, "Both")
@@ -316,6 +316,18 @@ _RECURRENCE_ONE_YEAR = (
 	(5, "Rechaza / No seguimiento")
 	)
 
+_ENDOCUT_MODE = (
+	(1, "1"),
+	(2, "2"),
+	(3, "3"),
+	(4, "4")
+	)
+
+_COAGULATION = (
+	(0, "Soft"),
+	(1, "Force")
+	)
+
 class Hospital(models.Model):
 	name = models.CharField(verbose_name = "Name", max_length = 100)
 
@@ -323,17 +335,44 @@ class Hospital(models.Model):
 		return self.name
 
 class Study(models.Model):
+	name = models.CharField(verbose_name = "Name", max_length = 200)
+	description = models.CharField(verbose_name = "Description", max_length = 500)
+
+	def __str__(self):
+		return self.name
+
 	class Meta:
 		verbose_name_plural = "Studies"
 
+class UserProfile(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	hospital = models.ForeignKey('Hospital')
+	studies = models.ManyToManyField('Study')
+
+	def __str__(self):
+		return str(self.user)
+
+
+class Case(models.Model):
+
+	def __str__(self):
+		clips = ""
+		if self.clips == None:
+			clips = "Undefined"
+		else:
+			clips = _CLIPS[self.clips][1]
+		return self.name + " - " +self.id_number+" ("+clips+")"
+
+	study = models.ForeignKey('Study', default = None , blank= True, null = True)
+	clips = models.IntegerField(verbose_name = "Clips", choices = _CLIPS, blank= True, null = True)
 	hospital = models.ForeignKey('Hospital', default = None , blank= True, null = True)
-	doctor = models.IntegerField(verbose_name = "Doctor", blank= True, null = True)
+	doctor = models.ForeignKey('UserProfile', verbose_name = "Doctor", blank= True, null = True)
 	date = models.DateField(verbose_name = "Date", blank= True, null = True)
 	name = models.CharField(verbose_name = "Name", max_length = 2, blank= True, null = True)
 	id_number = models.CharField(verbose_name = "ID Number", max_length = 10, blank= True, null = True) #length?
 	age = models.IntegerField(verbose_name = "Age", validators = [MinValueValidator(0)], blank= True, null = True)
-	age_interval = models.CharField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, max_length = 2, blank= True, null = True) #nombre en español?
-	sex = models.CharField(verbose_name = "Sex", choices = _SEX, max_length = 1, blank= True, null = True)
+	age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, max_length = 2, blank= True, null = True) #nombre en español?
+	sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, max_length = 1, blank= True, null = True)
 	asa = models.IntegerField(verbose_name = "ASA", choices = _ASA , blank= True, null = True)
 	hypertension = models.IntegerField(verbose_name = "Hypertension", choices = _NO_YES, blank= True, null = True) 
 	hb = models.IntegerField(verbose_name = "HB", blank= True, null = True)
@@ -342,10 +381,10 @@ class Study(models.Model):
 	pt = models.IntegerField(verbose_name = "PT", blank= True, null = True)   #max-min ?
 	aspirin = models.IntegerField(verbose_name = "Aspirin", choices = _ASPIRIN, blank= True, null = True)
 	anticoagulants = models.IntegerField(verbose_name = "Anticoagulants", choices = _ANTICOAGULANT, blank= True, null = True)
-	antiplatelet_anticoagulant = models.IntegerField(verbose_name = "Antiplatelet anticoagulant", choices = _ANTIPLATELET, blank= True, null = True)
+	antiplatelet_anticoagulant = models.IntegerField(verbose_name = "Antiplatelet anticoagulant/antiagregant", choices = _ANTIPLATELET, blank= True, null = True)
 	heparinbridgetherapy = models.IntegerField(verbose_name = "Heparin Bridge Therapy", choices = _NO_YES, blank= True, null = True)
-	nombre_p_activo_antiagreg_anticoag = models.IntegerField(verbose_name = "Nombre p. activo antiagregante...", blank= True, null = True) #nombre en español, está cotado
-	day_of_reintroduction_antiagregant = models.IntegerField(verbose_name = "Day of reintroduction antiagregant", blank= True, null = True) #nombre?
+	nombre_p_activo_antiagreg_anticoag = models.IntegerField(verbose_name = "Active ingredient anticoagulant/antiagregant", blank= True, null = True)
+	day_of_reintroduction_antiagregant = models.IntegerField(verbose_name = "Day of reintroduction anticoagulant/antiagregant", blank= True, null = True) 
 	paris_calif = models.IntegerField(verbose_name = "Paris Clasif.", choices = _PARIS, blank= True, null = True)
 	lst_yn = models.IntegerField(verbose_name = "LST yn", choices= _NO_YES, blank= True, null = True)
 	lst_morphology = models.IntegerField(verbose_name = "LST Morphology", choices = _MORPHOLOGY, blank= True, null = True)
@@ -371,7 +410,7 @@ class Study(models.Model):
 	correct_dx_invasion = models.IntegerField(verbose_name = "Correct Dx Invasion", choices = _NO_YES, blank= True, null = True)
 	histology = models.IntegerField(verbose_name = "Histology", choices = _HISTOLOGY, blank= True, null = True)
 	histol_simplified = models.IntegerField(verbose_name = "Histology simplified", choices = _HISTOLOGY_SIMP, blank= True, null = True)
-	time_of_procedure_in_mins = models.IntegerField(verbose_name = "Time of procedure (s, blank= True, null = True)", blank= True, null = True)
+	time_of_procedure_in_mins = models.IntegerField(verbose_name = "Time of procedure (s)", blank= True, null = True)
 	difficulty_of_emr = models.IntegerField(verbose_name = "Dificutly of EMR", choices = _DIFFICULTY, blank= True, null = True)
 	accesibility = models.IntegerField(verbose_name = "Accesibility", choices = _DIFFICULTY, blank= True, null = True)
 	resection = models.IntegerField(verbose_name = "Resection", choices = _RESECTION, blank= True, null = True)
@@ -390,10 +429,13 @@ class Study(models.Model):
 	argon_PC = models.IntegerField(verbose_name = "Argon PC", choices = _ARGON_PC, blank= True, null = True)
 	argon_coagulacion = models.IntegerField(verbose_name = "Argón Coagulación", choices = _NO_YES, blank= True, null = True) #nombre en español?
 	coagulation_forceps = models.IntegerField(verbose_name = "Coagulation forceps", choices = _NO_YES, blank= True, null = True)
-	clips = models.IntegerField(verbose_name = "Clips", choices = _CLIPS, blank= True, null = True)
+	cs_cut_watts = models.IntegerField(verbose_name = "Cut (watts)", blank = True, null = True)
+	cs_cut_mode = models.IntegerField(verbose_name = "Endocut mode", choices = _ENDOCUT_MODE, blank= True, null = True )
+	cs_coagulation_watts = models.IntegerField(verbose_name = "Coagulation (watts)", blank = True, null = True)
+	cs_coagulation_mode = models.IntegerField(verbose_name = "Coagulation mode", choices = _COAGULATION, blank= True, null = True )
 	clips_control_group = models.IntegerField(verbose_name = "Clips control group", choices = _CLIPS_CONTROL, blank= True, null = True)
 	clips_tratment_group = models.IntegerField(verbose_name = "Clips treatment group", choices = _CLIPS_TREAT_GROUP, blank= True, null = True)
-	not_tired_closure_by = models.IntegerField(verbose_name = "Not tired closure by", choices = _NO_TIRED, blank= True, null = True)
+	not_tired_closure_by = models.IntegerField(verbose_name = "Not tried closure by", choices = _NOT_TRIED, blank= True, null = True)
 	closure_technique = models.IntegerField(verbose_name = "Closure technique", choices = _CLOSURE_TECHNIQUE, blank= True, null = True)
 	number_clips_needed = models.IntegerField(verbose_name = "Number of clips needed", blank= True, null = True)
 	perforation = models.IntegerField(verbose_name = "Perforation", choices = _PERFORATIOM, blank= True, null = True)

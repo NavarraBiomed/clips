@@ -33,7 +33,8 @@ LANGUAGE_CODE = 'en-us'
 # Application definition
 
 INSTALLED_APPS = (
-    'material',
+    'material',    
+    'material.frontend',
     'material.admin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -86,6 +87,7 @@ DATABASES = {
     }
 }
 
+#AUTH_PROFILE_MODULE = 'clips_app.UserProfile'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -105,3 +107,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+LOGIN_REDIRECT_URL = '/'

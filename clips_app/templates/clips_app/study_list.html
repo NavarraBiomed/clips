@@ -1,8 +1,34 @@
-{% load material_form %} 
-<form method="POST">
-    {% csrf_token %}
-    {% form form=form %}
-     {% part form.name prefix %}<i class="mdi-action-account-box prefix"></i>{% endpart %}
-     {% endform %}
-    <button type="submit" name="_submit" class="btn">Submit</button>
-</form>
+{% extends 'clips_app/base.html' %}
+{% load staticfiles %}
+{% block extra_header %}
+<link rel="stylesheet" href="{% static 'css/study_list.css' %}">
+{% endblock extra_header %}
+
+{% block content %}
+		<div class="card card-expand box-shadow">
+		<div class="card-title">Study list for {{user}}</div>
+		<div id="studies-table" class="card-table green-text">
+		{% for study in user.studies.all %}		
+				<div class="study card-row">
+					<div class = "card-cell study-name" >
+						 <a>
+						{{study.name}}
+						</a>
+					</div>
+					<div class = "card-cell study-addCase" >
+						<a  href = "{% url 'clips_app.views.new_case' study_id=study.pk %}">
+						<i class="material-icons">add</i>
+						</a>
+					</div>
+					<div class = "card-cell study-addCase" >
+						<a  href = "{% url 'clips_app.views.study_details' study_id=study.pk %}">
+						<i class="material-icons">info</i>
+						</a>
+					</div>
+
+				</div>
+			
+		{% endfor %}
+		</div>
+		</div>
+{% endblock content %}

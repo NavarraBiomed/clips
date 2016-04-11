@@ -1,0 +1,24 @@
+{% extends 'clips_app/base.html' %}
+{% load staticfiles %}
+{% block extra_header %}
+<link rel="stylesheet" href="{% static 'css/study_details.css' %}">
+{% endblock extra_header %}
+
+{% block content %}
+		<div class="card card-expand box-shadow">
+		<div class="card-title">Study '{{study}}' for {{user}}</div>
+		<div id="studies-table" class="card-table green-text">
+		{%  for case in cases  %}		
+				<div class="case card-row">
+					<div class = "case-name card-cell" >
+						 <a href = "{% url 'clips_app.views.study_details' study_id=study.pk %}">
+						{{case}}
+						</a>
+					</div>
+
+				</div>
+			
+		{% endfor %}
+		</div>
+		</div>
+{% endblock content %}

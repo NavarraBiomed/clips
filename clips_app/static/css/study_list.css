@@ -1,0 +1,11 @@
+#container{
+	align-items: center;
+}
+
+.card-cell{
+	flex: 1;
+}
+
+.study-name{
+	flex: 2;
+}

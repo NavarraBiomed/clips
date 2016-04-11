@@ -1,3 +1,22 @@
- {% include 'material/includes/material_css.html' %}
+{% load staticfiles %}
+<html>
+<head>
+<title>Studies</title>
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 {% include 'material/includes/material_js.html' %}
+{% block extra_header %}
+{% endblock %}
+</head>
+<body>  
+    <div id="wrapper">
+        <div class="page-header green">
+            <a href="/">Studies </a>
+        </div>
+        <div id="container">
+                {% block content %}
+                {% endblock %}
+        </div>
+    </div>
+</body>

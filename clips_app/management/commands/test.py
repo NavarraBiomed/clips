@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from clips_app.models import Study
+from clips_app.models import Case
 import django
 
 
@@ -131,8 +131,8 @@ class Command(BaseCommand):
             #print(reader_list[0].keys())
             for index, row in enumerate(reader):
                 #row = reader_list[0]
-                print("-------- Study #"+ str(index)+" ----------")
-                for field in Study._meta.get_fields():
+                print("-------- Case #"+ str(index)+" ----------")
+                for field in Case._meta.get_fields():
                     if type(field) is django.db.models.fields.IntegerField:
                         try:
                             row[model_to_row[field.name]] =  parse_num(row[model_to_row[field.name]])
@@ -145,7 +145,7 @@ class Command(BaseCommand):
                         except:
                             print("Date format error in :"+model_to_row[field.name]+ " -> "+row[model_to_row[field.name]])
                 
-                Study.objects.create(
+                Case.objects.create(
                     doctor = row['Medicoresponsable'],
                     date = row['Date'],
                     name = row['Name'],
