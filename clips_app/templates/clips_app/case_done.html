@@ -1,0 +1,34 @@
+{% extends 'clips_app/base.html' %}
+{% load staticfiles %}
+{% block extra_header %}
+<link rel="stylesheet" href="{% static 'css/case_done.css' %}">
+{% endblock extra_header %}
+
+{% block content %}
+		<div class="card card-expand box-shadow">
+		<div class="card-title">New study</div>
+		<div id="studies-table" class=" green-text">	
+			<div id="result-row">
+				<div class="input-field col s12" id="id_score_container">
+	              <input id="id_score"  type="text" value="{{score}}" readonly>
+	              <label class="active" for="id_score">Score</label>
+	            </div>
+	            <div class="input-field col s12" id="id_clips_container">
+	              <input id="id_clips"   type="text" value=
+	                    {% if clips == 0 %}
+	                    "Control group"
+	                    {% elif clips == 1 %}
+	                    "Treatment group"
+	                    {% else %}
+	                    "-----------"
+	                    {% endif %}
+	                     readonly> 
+	              <label class="active" for="id_clips">Group</label>
+	            </div>
+            </div>
+            <div id="buttons-row">
+            <button  class="btn btn-primary btn-lg"><a href = "/study/{{study_id}}/">Done</a></button>
+            </div>
+		</div>
+		</div>
+{% endblock content %}

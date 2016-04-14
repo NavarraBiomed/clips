@@ -77,7 +77,8 @@ class CaseAdmin(admin.ModelAdmin):
 			'endocut',
 			'electrosurgical_generator_model',
 			'polyp_retrieval',
-			('argon_PC', 'argon_coagulacion', 'coagulation_forceps' )
+			('argon_PC', 'argon_coagulacion'),
+			('snare_tip_soft_coagulation', 'coagulation_forceps' )
 			)
 		}),
 		('Cautering settings', {
@@ -91,6 +92,7 @@ class CaseAdmin(admin.ModelAdmin):
 			('clips_control_group', 'clips_tratment_group'),
 			('not_tired_closure_by', 'closure_technique'),
 			'number_clips_needed',
+			('clips_n_lote', 'clips_exp_date')
 			)
 		}),
 		('Complications', {

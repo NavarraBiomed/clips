@@ -61,7 +61,8 @@ class CaseForm(forms.ModelForm):
 						'endocut',
 						'electrosurgical_generator_model',
 						'polyp_retrieval',
-						Row('argon_PC', 'argon_coagulacion', 'coagulation_forceps' )
+						Row('argon_PC', 'argon_coagulacion'),
+						Row('snare_tip_soft_coagulation', 'coagulation_forceps' )
                    	),
                    	Fieldset('Cautering settings',
                    		Row('cs_cut_watts', 'cs_cut_mode'),
@@ -71,6 +72,7 @@ class CaseForm(forms.ModelForm):
                    		Row('clips_control_group', 'clips_tratment_group'),
 						Row('not_tired_closure_by', 'closure_technique'),
 						'number_clips_needed',
+						Row('clips_n_lote', 'clips_exp_date')
                    	),
                    	Fieldset('Complications',
                    		'perforation',

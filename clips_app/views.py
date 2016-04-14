@@ -38,6 +38,29 @@ def study_details(request, study_id):
 		return HttpResponseForbidden()
 
 
+def calculate_score(case):
+	score = 0
+	if case.age_interval == 3: #>=75
+		score += 1
+
+	if case.asa != None and case.asa > 2:
+		score +=1
+
+	if case.maximum_size_mm != None and case.maximum_size_mm >= 40:
+		score += 1
+
+
+	if case.anticoagulants != None and case.anticoagulants in [5, 6]:
+		score +=2
+
+	if case.location !=None and case.location == 4:
+		score +=3
+
+	if score == None:
+		return -1
+	return score
+
+
 @login_required
 def new_case(request, study_id):
 	#Redirect to admin site if needed
@@ -52,8 +75,14 @@ def new_case(request, study_id):
 	if request.method == "POST":		
 		form = CaseForm(request.POST)
 		if form.is_valid():			
-			case = form.save()
-			return redirect('/study/'+str(study_id)+'/')
+			case = form.save(commit = False)
+			score = calculate_score(case)
+			if (score >= 4):
+				form.save()
+				return render(request, 'clips_app/case_done.html', {'user_prof':user, 'score': score, 'clips':clips, 'study_id':study_id})
+			else:
+				return redirect('/NO_PASA/'+str(score))
+			
 		else:
 			return redirect('/invalid_form/')
 	else:
