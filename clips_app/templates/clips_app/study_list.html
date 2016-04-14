@@ -9,22 +9,29 @@
 		<div class="card-title">Study list for {{user_prof}}</div>
 		<div id="studies-table" class="card-table green-text">
 		{% for study in user_prof.studies.all %}		
-				<div class="study card-row">
-					<div class = "card-cell study-name" >
-						 <a>
+				<div class="study card-cell">
+					<div class = "card-cell-title study-name" >
+						 <span>
 						{{study.name}}
-						</a>
+						</span>
 					</div>
-					<div class = "card-cell study-addCase" >
-						<a  href = "{% url 'clips_app.views.new_case' study_id=study.pk %}">
-						<i class="material-icons">add</i>
-						</a>
-					</div>
-					<div class = "card-cell study-addCase" >
+					<div class="card-cell-icon-div">
 						<a  href = "{% url 'clips_app.views.study_details' study_id=study.pk %}">
-						<i class="material-icons">info</i>
-						</a>
+						<i class="material-icons card-cell-icon">assignment_ind</i>
 					</div>
+					<div class ="card-cell-buttons">
+						<div class = "card-cell-title study-addCase" >
+							<a  href = "{% url 'clips_app.views.new_case' study_id=study.pk %}">
+							<i class="material-icons">add</i>
+							</a>
+						</div>
+						<div class = "card-cell-title study-addCase" >
+							<a  href = "{% url 'clips_app.views.study_info' study_id=study.pk %}">
+							<i class="material-icons">info</i>
+							</a>
+						</div>
+					</div>
+					
 
 				</div>
 			

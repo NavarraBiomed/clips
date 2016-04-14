@@ -1,0 +1,60 @@
+{% extends 'clips_app/base.html' %}
+{% load material_form %}
+    {% block content %}
+<div class="card card-expand box-shadow">
+  <div class="card-title">{% if new %}
+        New case
+        {% else %}
+        Edit case
+        {% endif %}</div>
+  <form method="POST" class="viewform">{% csrf_token %}
+      {% form %}          
+          {% part form.study %}
+            <div class="input-field col s12" id="id_study_container">
+              <i class="mdi-action-assignment prefix"></i>
+              <input id="id_study_name"  type="text" value="{{study}}" readonly>
+              <input id="id_study"  name = "study" type="hidden" value="{{study.pk}}" readonly>
+              <label class="active" for="id_study">Study</label>
+            </div>
+          {% endpart %}
+          {% part form.clips %}
+            <input id = "id_clips" name = "clips" type ="hidden" value="{{clips}}" />
+            <div class="input-field col s12" id="id_clips_container">
+            <i class="mdi-action-info prefix"></i>
+            <input id="id_clips_name"   type="text" value=
+                    {% if clips == 0 %}
+                    "Control group"
+                    {% elif clips == 1 %}
+                    "Treatment group"
+                    {% else %}
+                    "-----------"
+                    {% endif %}
+                     readonly>            
+            <label class="active" for="id_clips">Clips</label>
+          </div>
+          {% endpart %}
+          {% part form.hospital %}
+            <div class="input-field col s12" id="id_hospital_container">
+              <i class="mdi-maps-local-hospital prefix"></i>
+              <input id="id_hospital_name"  type="text" value="{{hospital}}" readonly>
+              <input id="id_hospital" name = "hospital" type="hidden" value="{{hospital.pk}}" readonly>
+              <label class="active" for="id_hospital">Hospital</label>
+            </div>
+          {% endpart %}
+          {% part form.doctor %}
+            <div class="input-field col s12" id="id_doctor_container">
+              <i class="mdi-action-account-box  prefix"></i>
+              <input id="id_doctor_name"  type="text" value="{{user_prof.user}}" readonly>
+              <input id="id_doctor"  name = "doctor" type="hidden" value="{{user_prof.pk}}" readonly>
+              <label class="active" for="id_doctor">Doctor</label>
+            </div>
+          {% endpart %}
+          {% part form.name prefix %}<i class="mdi-action-account-box prefix"></i>{% endpart %}
+          {% part form.id_number prefix %}<i class="mdi-communication-email prefix"></i>{% endpart %}
+          {% part form.date prefix %}<i class="mdi-action-today prefix"></i>{% endpart %}
+      {% endform %}
+      <button type="submit" name="_submit" class="btn btn-primary btn-lg">Submit</button>
+  </form>
+</div>
+                  
+    {% endblock %}

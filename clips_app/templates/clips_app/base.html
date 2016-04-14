@@ -2,7 +2,14 @@
 <html>
 <head>
 <title>Studies</title>
+<link href="/static/material/css/materialize.css" rel="stylesheet">
+<link href="/static/material/css/material-design-iconic-font.css" rel="stylesheet">
+<link href="/static/material/css/jquery.datetimepicker.css" rel="stylesheet">
+<link href="/static/material/css/responsive.dataTables.css" rel="stylesheet">
+<link href="/static/material/css/forms.css" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/custom_forms.css' %}">
+<link rel="stylesheet" href="{% static 'css/my_material.css' %}">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 {% include 'material/includes/material_js.html' %}
@@ -12,8 +19,13 @@
 <body>  
     <div id="wrapper">
         <div class="page-header green">
-            <a href="/">Studies </a>
-            <div id="logout" class="right">{% if user.is_authenticated %}{{user}} (<a href="/admin/logout/">Log out</a>){% endif %}</div>
+            <div class="page-header-up green">
+                <a href="/">Clips</a>
+                <div id="logout" class="right">{% if user_prof.user.is_authenticated %}{{user}} (<a href="/admin/logout/">Log out</a>){% endif %}</div>
+            </div>
+            <div class="page-header-down green-dark">
+            </div>
+            
         </div>
         <div id="container">
                 {% block content %}

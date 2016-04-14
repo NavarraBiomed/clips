@@ -1,26 +1,45 @@
-{% extends "clips_app/base.html" %}
+{% extends 'clips_app/base.html' %}
+{% load staticfiles %}
+{% block extra_header %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock extra_header %}
 
 {% block content %}
+		
+	{% if form.errors %}
+	<p>Your username and password didn't match. Please try again.</p>
+	{% endif %}
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+	<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+	{% csrf_token %}
+	<div class="card card-expand box-shadow">
+		<div class="card-title">Login</div>
+		<div class="row">
+			<div class="input-field col s12 required" id="id_username_container">
+				<i class="mdi-action-account-box prefix"></i><input id="id_username" maxlength="254" name="username" type="text">
+				<label for="id_username">Username</label>
 
-<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
+			</div>
+		</div>
 
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
+		<div class="row">
+			<div class="input-field col s12 required" id="id_password_container">
+				<i class="mdi-action-lock prefix"></i><input id="id_password" name="password" type="password">
+				<label for="id_password">Password</label>
+			</div>
+		</div>
 
-{% endblock %}
+
+
+
+		<div class="card-action right-align">
+		<button type="submit" class="btn btn-primary">Log in</button>
+			</div>
+	</div>
+
+
+	
+	</form>
+
+		
+{% endblock content %}

@@ -1,0 +1,14 @@
+.line{
+	display:flex;
+}
+
+.input-container{
+    flex: 1;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.input-field {
+    position: relative;
+    margin-top: 0.75em;
+}

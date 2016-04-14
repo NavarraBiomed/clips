@@ -1,11 +1,7 @@
-#container{
-	align-items: center;
-}
-
-.card-cell{
+.card-cell-title{
 	flex: 1;
 }
 
 .study-name{
-	flex: 2;
+	flex: 1;
 }

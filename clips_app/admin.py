@@ -19,10 +19,10 @@ class CaseAdmin(admin.ModelAdmin):
 	fieldsets = (
 		('Hospital info', {
 		'fields': (
-			'study',
-			'clips', 
-			'hospital',
-			'doctor'
+			('study',),
+			('clips',),
+			('hospital',),
+			('doctor',)
 			)
 		}),
 		('Patient info', {
@@ -114,7 +114,7 @@ class CaseAdmin(admin.ModelAdmin):
 
 			)
 		}),
-		('Additional Info', {
+		('Additional info', {
 		'fields': (
 			'other_complications_comments',
 			'other_comments',
