@@ -81,6 +81,13 @@ a{
 
 }
 
+.card-corner-button{
+	position: absolute;
+	top: 0.5em;
+	right: 0.5em;
+	font-size: 2.5em;
+}
+
 .card-cell{
 	background-color: #F1F1F1;
 	margin: 0.5em;
@@ -138,6 +145,10 @@ a{
 
 .green-text, .card-element div{
 	color: #74A276 !important;
+}
+
+.green-text-dark{
+	color: #388E3C !important;
 }
 
 .green-dark {

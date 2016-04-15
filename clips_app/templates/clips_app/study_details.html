@@ -6,6 +6,7 @@
 
 {% block content %}
 		<div class="card card-expand box-shadow">
+		<div class="card-corner-button green-text-dark"><a href = "{% url 'clips_app.views.study_info' study_id=study.pk %}"><i class="mdi-action-info prefix"></i></a></div>
 		<div class="card-title">Study '{{study}}' for {{user_prof}}</div>
 		<div id="studies-table" class="card-table green-text">
 		{%  for case in cases  %}		
@@ -14,7 +15,7 @@
 					
 					<div class = "card-cell-title study-name" >
 						 <span>
-						{{case.name}}-{{case.id_number}}
+						Id: {{case.pk}}
 						</span>
 					</div>
 					<div class="card-cell-icon-div">						

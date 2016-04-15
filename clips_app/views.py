@@ -77,11 +77,8 @@ def new_case(request, study_id):
 		if form.is_valid():			
 			case = form.save(commit = False)
 			score = calculate_score(case)
-			if (score >= 4):
-				form.save()
-				return render(request, 'clips_app/case_done.html', {'user_prof':user, 'score': score, 'clips':clips, 'study_id':study_id})
-			else:
-				return redirect('/NO_PASA/'+str(score))
+			form.save()
+			return render(request, 'clips_app/case_done.html', {'user_prof':user, 'score': score, 'clips':clips, 'study_id':study_id})
 			
 		else:
 			return redirect('/invalid_form/')
