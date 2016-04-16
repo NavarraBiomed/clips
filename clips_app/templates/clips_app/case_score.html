@@ -1,0 +1,99 @@
+{% extends 'clips_app/base.html' %}
+{% load staticfiles %}
+{% block extra_header %}
+<link rel="stylesheet" href="{% static 'css/scoretable.css' %}">
+<script src="{% static 'js/score.js' %}"></script>
+{% endblock extra_header %}
+
+{% block content %}
+		<div class="card card-expand box-shadow">
+		<div class="card-title">New study</div>
+		<div id="studies-table" class=" green-text">	
+		<form action="/validate/" method="POST">{% csrf_token %}
+			<input id="study" name="study_id" type="hidden" value="{{study_id}}"/>
+			<div class="result-row">
+				<div class="input-field col s12" id="id_clips_container">
+					<i class="mdi-action-info prefix"></i>
+					<input id = "id_clips" name = "clips" type ="hidden" value="{{clips}}" />
+					<input id="id_clips_name"   type="text" value=
+					{% if clips == 0 %}
+					"Control group"
+					{% elif clips == 1 %}
+					"Treatment group"
+					{% else %}
+					"-----------"
+					{% endif %}
+					readonly>            
+					<label class="active" for="id_clips">Clips</label>
+				</div>
+				<div class="input-field col s12" id="id_score_container">
+					<label class="active" for="id_score">Score</label>
+					<i class="mdi-av-equalizer prefix"></i>
+					<input id = "id_score" type = "text" name="score" value="0" readonly/>
+				</div>
+			</div>
+			<div class="result-row">
+				<div class="input-field col s12" id="age_container">
+					<label class="active" for="id_age">Age interval</label>
+					<select id="id_age" name="age">
+						<option value>---------</option>
+						<option value="1">< 60</option>
+						<option value="2">60-74</option>
+						<option value="3">>=75</option>
+					</select>
+	              
+	            </div>
+	            <div class="input-field col s12" id="asa_container">
+					<label class="active" for="id_asa">ASA</label>
+					<select id="id_asa" name="asa">
+						<option value>---------</option>
+						<option value="1">I</option>
+						<option value="2">II</option>
+						<option value="3">III</option>
+						<option value="4">IV</option>
+					</select>
+	            </div>
+	            
+            </div>
+            <div class="result-row">
+            	<div class="input-field col s12" id="anticoagulants_container">
+					<label for="id_anticoagulants" class="active">Anticoagulants</label>
+					<select id="id_anticoagulants" name="anticoagulants">
+						<option value>---------</option>
+						<option value="0">No</option>
+						<option value="1">Aspirin</option>
+						<option value="2">Clopidogrel</option>
+						<option value="3">Other antiagregant</option>
+						<option value="4">Warfarin</option>
+						<option value="5">NSAID</option>
+						<option value="6">2 NSAID including aspiring or not</option>
+						<option value="7">Aspirin+clopidogrel</option>
+						<option value="8">NACOs</option>
+					</select>
+	            </div>
+	            <div class="input-field col s12" id="location_container">
+					<label for="id_location" class="active">Location</label>
+					<select id="id_location" name="location">
+						<option value>---------</option>
+						<option value="1">Rectum</option>
+						<option value="2">Left colon</option>
+						<option value="3">Splenic flexure</option>
+						<option value="4">Transverse</option>
+						<option value="5">Hepatic</option>
+						<option value="6">Ascendent</option>
+						<option value="7">Cecum</option>
+					</select>
+	            </div>
+            </div>
+            <div class="result-row">
+            	<div class="input-field col s12" id="size_container">
+	            	<label for="id_size" class="active">Size</label>
+	            	<input id="id_size" type="number" name="maximum_size_mm" value=""/>
+            	</div>
+            </div>
+            <div id="buttons-row">
+            <button id="submit_button" type="submit" class="btn btn-primary btn-lg" disabled>Done</button>
+            </div>
+		</div>
+		</div>
+{% endblock content %}

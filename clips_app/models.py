@@ -11,8 +11,8 @@ _SEX = (
 	)
 
 _TRAMOS_EDAD = (
-	(1, "<= 60"),
-	(2, "67-74"),
+	(1, "< 60"),
+	(2, "60-74"),
 	(3, ">= 75")
 	)
 
@@ -361,15 +361,15 @@ class Case(models.Model):
 			clips = "Undefined"
 		else:
 			clips = _CLIPS[self.clips][1]
-		return self.name + " - " +self.id_number+" ("+clips+")"
+		return str(self.pk) +"("+clips+")"
 
 	study = models.ForeignKey('Study', default = None , blank= True, null = True)
 	clips = models.IntegerField(verbose_name = "Clips", choices = _CLIPS, blank= True, null = True)
 	hospital = models.ForeignKey('Hospital', default = None , blank= True, null = True)
 	doctor = models.ForeignKey('UserProfile', verbose_name = "Doctor", blank= True, null = True)
 	date = models.DateField(verbose_name = "Date", blank= True, null = True)
-	name = models.CharField(verbose_name = "Name", max_length = 2, blank= True, null = True)
-	id_number = models.CharField(verbose_name = "ID Number", max_length = 10, blank= True, null = True) #length?
+	#name = models.CharField(verbose_name = "Name", max_length = 2, blank= True, null = True)
+	#id_number = models.CharField(verbose_name = "ID Number", max_length = 10, blank= True, null = True) #length?
 	age = models.IntegerField(verbose_name = "Age", validators = [MinValueValidator(0)], blank= True, null = True)
 	age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, max_length = 2, blank= True, null = True) #nombre en español?
 	sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, max_length = 1, blank= True, null = True)

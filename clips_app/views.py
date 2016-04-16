@@ -33,7 +33,7 @@ def study_details(request, study_id):
 	user = UserProfile.objects.get(user = request.user)
 	cases = Case.objects.filter(study = study, doctor = user)
 	if study in user.studies.all():
-		return render(request, 'clips_app/study_details.html', {'study': study, 'cases': cases, 'user_prof':user})
+		return render(request, 'clips_app/study_details.html', {'study': study, 'study_id':study.pk, 'cases': cases, 'user_prof':user})
 	else:
 		return HttpResponseForbidden()
 
@@ -53,11 +53,12 @@ def calculate_score(case):
 	if case.anticoagulants != None and case.anticoagulants in [5, 6]:
 		score +=2
 
-	if case.location !=None and case.location == 4:
+	if case.location !=None and case.location >= 4:
 		score +=3
 
 	if score == None:
 		return -1
+
 	return score
 
 
@@ -69,23 +70,55 @@ def new_case(request, study_id):
 
 	user = UserProfile.objects.get(user = request.user)
 	study = Study.objects.get(pk = study_id)
-	hospital = Hospital.objects.get(pk = user.hospital_id)
 	clips = random.choice([0,1])
 
-	if request.method == "POST":		
-		form = CaseForm(request.POST)
-		if form.is_valid():			
-			case = form.save(commit = False)
-			score = calculate_score(case)
-			form.save()
-			return render(request, 'clips_app/case_done.html', {'user_prof':user, 'score': score, 'clips':clips, 'study_id':study_id})
-			
-		else:
-			return redirect('/invalid_form/')
-	else:
-		form = CaseForm()
-	return render(request, 'clips_app/case_edit.html', {'user_prof':user, 'clips': clips, 'study':study, 'hospital':hospital, 'form': form,  'new': True})
+	return render(request, 'clips_app/case_score.html', {'user_prof':user, 'study_id':study_id, 'clips':clips})
 
+def int_or_none(string):
+	try:
+		return int(string)
+	except:
+		return None
+
+@login_required
+def validate_score(request):
+	#Redirect to admin site if needed
+	if request.user.is_superuser:
+		return HttpResponseRedirect("/admin")
+
+	user = UserProfile.objects.get(user = request.user)
+	hospital = Hospital.objects.get(pk = user.hospital_id)
+
+	if request.method == "POST":
+		post = request.POST
+		
+		clips = int_or_none(post['clips'])
+		age = int_or_none(post['age'])
+		anticoagulants = int_or_none(post['anticoagulants'])
+		location = int_or_none(post['location'])
+		size = int_or_none(post['maximum_size_mm'])
+		study_id = int_or_none(post['study_id'])
+
+		case = Case()
+		study = Study.objects.get(pk = study_id)
+		case.study = study
+		case.doctor = user
+		case.hospital = hospital
+		case.clips = clips
+		case.age_interval = age
+		case.location = location
+		case.anticoagulants = anticoagulants
+		case.maximum_size_mm = size
+
+		score = calculate_score(case)
+
+		if score >= 4:
+			case.save()
+			return redirect('/case/'+str(case.pk)+'/edit')
+
+		return redirect('/POST/score:'+str(score)+"____location:_"+str(location))
+	else:
+		return redirect('/study/'+str(study.pk)+'/')
 
 @login_required
 def case_edit(request, pk):
@@ -106,6 +139,7 @@ def case_edit(request, pk):
 	    form = CaseForm(instance=case)
 	return render(request, 'clips_app/case_edit.html', {'user_prof':user, 'clips': case.clips,'study':study, 'hospital':hospital, 'form': form, 'new': False})
 
+
 @login_required
 def study_info(request, study_id):
 	#Redirect to admin site if needed
@@ -115,8 +149,12 @@ def study_info(request, study_id):
 	user = UserProfile.objects.get(user = request.user)
 	study = Study.objects.get(pk = study_id)
 
-	return render(request, 'clips_app/study_info.html', {'user_prof':user, 'study':study})
+	return render(request, 'clips_app/study_info.html', {'user_prof':user, 'study_id':study.pk})
 
+
+@login_required
+def message(request):
+	return render(request, 'clips_app/message.html', {'user_prof':user, 'study':study})
 
 @login_required
 def study_json(request, study_id):

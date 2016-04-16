@@ -27,7 +27,6 @@ class CaseAdmin(admin.ModelAdmin):
 		}),
 		('Patient info', {
 		'fields': (
-			('name', 'id_number'),
 			('sex', 'age', 'age_interval'),
 			'date',
 			('asa', 'hypertension', 'hb'),

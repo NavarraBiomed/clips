@@ -1,5 +1,5 @@
 queue()
-    .defer(d3.json, "/study/"+study_id+"/json/")
+    .defer(d3.json, "/study/1/json/")
     .await(makeGraphs);
 
 

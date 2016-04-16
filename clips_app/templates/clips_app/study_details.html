@@ -1,35 +1,39 @@
-{% extends 'clips_app/base.html' %}
+{% extends 'clips_app/base_graphs.html' %}
 {% load staticfiles %}
-{% block extra_header %}
+{% block header_2 %}
 <link rel="stylesheet" href="{% static 'css/study_details.css' %}">
-{% endblock extra_header %}
+{% endblock header_2 %}
 
 {% block content %}
-		<div class="card card-expand box-shadow">
-		<div class="card-corner-button green-text-dark"><a href = "{% url 'clips_app.views.study_info' study_id=study.pk %}"><i class="mdi-action-info prefix"></i></a></div>
-		<div class="card-title">Study '{{study}}' for {{user_prof}}</div>
-		<div id="studies-table" class="card-table green-text">
-		{%  for case in cases  %}		
-				<a  href = "{% url 'case_edit' pk=case.pk %}">
-				<div class="case card-cell">
-					
-					<div class = "card-cell-title study-name" >
-						 <span>
-						Id: {{case.pk}}
-						</span>
-					</div>
-					<div class="card-cell-icon-div">						
-						<i class="material-icons card-cell-icon">subject</i>
-					</div>				
+	<div class="card card-expand box-shadow">
+	<div class="card-corner-button green-text-dark"><a href = "{% url 'clips_app.views.study_info' study_id=study.pk %}"><i class="mdi-action-info prefix"></i></a></div>
+	<div class="card-title">Study '{{study}}' for {{user_prof}}</div>
+	<div id="studies-table" class="card-table green-text">
+	{%  for case in cases  %}		
+			<a  href = "{% url 'case_edit' pk=case.pk %}">
+			<div class="case card-cell">
+				
+				<div class = "card-cell-title study-name" >
+					 <span>
+					Id: {{case.pk}}
+					</span>
 				</div>
-				</a>
-			
-		{% endfor %}
-		</div>
-		</div>
-<div class="fixed-action-btn" style="bottom: 3em; right: 5em;">
-    <a class="btn-floating btn-large red"  href = "{% url 'clips_app.views.new_case' study_id=study.pk %}">
-      <i class="material-icons">add</i>
-    </a>
-</div>
+				<div class="card-cell-icon-div">						
+					<i class="material-icons card-cell-icon">subject</i>
+				</div>				
+			</div>
+			</a>
+		
+	{% endfor %}
+	</div>
+	</div>
+	<div class="fixed-action-btn" style="bottom: 3em; right: 5em;">
+	    <a class="btn-floating btn-large red"  href = "{% url 'clips_app.views.new_case' study_id=study.pk %}">
+	      <i class="material-icons">add</i>
+	    </a>
+	</div>
+	<div class="card card-expand box-shadow">
+	<div class="card-title">Cases by hospital</div>
+	<div id="hospital-bar-chart"></div>
+	</div>
 {% endblock content %}
