@@ -10,7 +10,7 @@ class CaseForm(forms.ModelForm):
 
     class Meta:
         model = Case
-        exclude = (None,)
+        exclude = ('id_for_doctor', 'id_for_hospital')
         #fields = ('name', 'clips', 'id_number', 'sex', 'study', 'doctor', 'date')
     
     layout = Layout(

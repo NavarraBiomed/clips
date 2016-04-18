@@ -88,6 +88,7 @@ def validate_score(request):
 
 	user = UserProfile.objects.get(user = request.user)
 	hospital = Hospital.objects.get(pk = user.hospital_id)
+	study = Study.objects.get(pk = request.POST['study_id'])
 
 	if request.method == "POST":
 		post = request.POST
@@ -109,6 +110,25 @@ def validate_score(request):
 		case.location = location
 		case.anticoagulants = anticoagulants
 		case.maximum_size_mm = size
+		#Calculate case ids
+		try:
+			last_id_for_doctor = Case.objects.filter(study = study, doctor = user).latest('id_for_doctor').id_for_doctor
+		except:
+			last_id_for_doctor = None
+		try:
+			last_id_for_hospital = Case.objects.filter(study = study, hospital = hospital).latest('id_for_hospital').id_for_hospital
+		except:
+			last_id_for_hospital = None
+
+		if last_id_for_doctor == None:
+			last_id_for_doctor = 0
+
+		if last_id_for_hospital == None:
+			last_id_for_hospital = 0
+
+
+		case.id_for_doctor = last_id_for_doctor+1
+		case.id_for_hospital = last_id_for_hospital+1
 
 		score = calculate_score(case)
 

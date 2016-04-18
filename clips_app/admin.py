@@ -22,7 +22,8 @@ class CaseAdmin(admin.ModelAdmin):
 			('study',),
 			('clips',),
 			('hospital',),
-			('doctor',)
+			('doctor',),
+			('id_for_hospital', 'id_for_doctor')
 			)
 		}),
 		('Patient info', {

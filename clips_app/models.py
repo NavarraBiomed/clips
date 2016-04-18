@@ -361,7 +361,7 @@ class Case(models.Model):
 			clips = "Undefined"
 		else:
 			clips = _CLIPS[self.clips][1]
-		return str(self.pk) +"("+clips+")"
+		return str(self.id_for_doctor) +" (H-"+str(self.id_for_hospital)+")"
 
 	study = models.ForeignKey('Study', default = None , blank= True, null = True)
 	clips = models.IntegerField(verbose_name = "Clips", choices = _CLIPS, blank= True, null = True)
@@ -369,7 +369,11 @@ class Case(models.Model):
 	doctor = models.ForeignKey('UserProfile', verbose_name = "Doctor", blank= True, null = True)
 	date = models.DateField(verbose_name = "Date", blank= True, null = True)
 	#name = models.CharField(verbose_name = "Name", max_length = 2, blank= True, null = True)
-	#id_number = models.CharField(verbose_name = "ID Number", max_length = 10, blank= True, null = True) #length?
+	#id_number = models.CharField(verbose_name = "ID Number", max_length = 10, blank= True, null = True) #length
+	###############
+	id_for_hospital = models.IntegerField(verbose_name = "Id for hospital", blank= True, null = True)
+	id_for_doctor = models.IntegerField(verbose_name = "Id for doctor", blank= True, null = True)
+	###############
 	age = models.IntegerField(verbose_name = "Age", validators = [MinValueValidator(0)], blank= True, null = True)
 	age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, max_length = 2, blank= True, null = True) #nombre en español?
 	sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, max_length = 1, blank= True, null = True)
