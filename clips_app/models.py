@@ -381,7 +381,7 @@ class Case(models.Model):
 	hypertension = models.IntegerField(verbose_name = "Hypertension", choices = _NO_YES, blank= True, null = True) 
 	hb = models.IntegerField(verbose_name = "HB", blank= True, null = True)
 	platelets = models.IntegerField(verbose_name = "Platelets", blank= True, null = True)
-	inr = models.IntegerField(verbose_name = "INR", blank= True, null = True) #max-min ?
+	inr = models.FloatField(verbose_name = "INR", blank= True, null = True) #max-min ?
 	pt = models.IntegerField(verbose_name = "PT", blank= True, null = True)   #max-min ?
 	aspirin = models.IntegerField(verbose_name = "Aspirin", choices = _ASPIRIN, blank= True, null = True)
 	anticoagulants = models.IntegerField(verbose_name = "Anticoagulants", choices = _ANTICOAGULANT, blank= True, null = True)

@@ -120,6 +120,20 @@ function makeGraphs(error, datos, galiciaJson) {
         .ordering(function(d){ return d.calls;})
         .elasticX(true)	
         .othersGrouper(false) //Removes "Other" from the list
+        /*
+        .colors(d3.scale.ordinal().domain(["user","other"])
+                                .range(["#FF0000","#6BAED6"]))
+        .colorAccessor(function(d) { 
+            if(d.key == 'Tom'){
+            	console.log("--TOM!!");
+                return 0
+            } else{
+            	console.log("---NOT TOM: ");
+	            console.log(d.key);
+	            return 1;
+            }            
+        })
+		*/
         .xAxis().ticks(4);
 
     hospitalRowChart

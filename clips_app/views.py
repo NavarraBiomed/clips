@@ -9,6 +9,30 @@ from .forms import CaseForm
 import random, json
 
 
+def generate_breadcrumbs(**kwargs):
+	#Home > Study > Case / Info / New
+	study = kwargs.get('study', None)
+	case = kwargs.get('case', None)
+	new = kwargs.get('new', None)
+	info = kwargs.get('info', None)
+
+	breadcrumbs = [{'name':'Home','link':'/'},]
+
+	if study:
+		breadcrumbs.append({'name':study.name, 'link':'/study/'+str(study.pk)})
+
+		if new:
+			breadcrumbs.append({'name':'New case', 'link':'/study/'+str(study.pk)+'/new'})
+
+		if case:
+			breadcrumbs.append({'name':case, 'link':'/case/'+str(case.pk)+'/edit'})
+
+		if info:
+			breadcrumbs.append({'name':'Info', 'link':'/study/'+str(study.pk)+'/info'})
+
+
+
+	return breadcrumbs
 
 # Create your views here.
 
@@ -19,7 +43,11 @@ def study_list(request):
 		return HttpResponseRedirect("/admin")
 	
 	user = UserProfile.objects.get(user = request.user)
-	return render(request, 'clips_app/study_list.html', {'user_prof':user})
+	breadcrumbs = generate_breadcrumbs
+	return render(request, 'clips_app/study_list.html', {
+		'user_prof':user,
+		'breadcrumbs':breadcrumbs
+		})
 
 
 @login_required
@@ -32,8 +60,17 @@ def study_details(request, study_id):
 	study = Study.objects.get(pk = study_id)
 	user = UserProfile.objects.get(user = request.user)
 	cases = Case.objects.filter(study = study, doctor = user)
+
+	breadcrumbs = generate_breadcrumbs(study = study)
+
 	if study in user.studies.all():
-		return render(request, 'clips_app/study_details.html', {'study': study, 'study_id':study.pk, 'cases': cases, 'user_prof':user})
+		return render(request, 'clips_app/study_details.html', {
+			'study': study,
+			'study_id':study.pk,
+			'cases': cases,
+			'user_prof':user,
+			'breadcrumbs': breadcrumbs
+			})
 	else:
 		return HttpResponseForbidden()
 
@@ -72,7 +109,14 @@ def new_case(request, study_id):
 	study = Study.objects.get(pk = study_id)
 	clips = random.choice([0,1])
 
-	return render(request, 'clips_app/case_score.html', {'user_prof':user, 'study_id':study_id, 'clips':clips})
+	breadcrumbs = generate_breadcrumbs(study = study, new = True)
+
+	return render(request, 'clips_app/case_score.html', {
+		'user_prof':user,
+		'study_id':study_id,
+		'clips':clips,
+		'breadcrumbs': breadcrumbs
+		})
 
 def int_or_none(string):
 	try:
@@ -96,6 +140,7 @@ def validate_score(request):
 		clips = int_or_none(post['clips'])
 		age = int_or_none(post['age'])
 		anticoagulants = int_or_none(post['anticoagulants'])
+		asa = int_or_none(post['asa'])
 		location = int_or_none(post['location'])
 		size = int_or_none(post['maximum_size_mm'])
 		study_id = int_or_none(post['study_id'])
@@ -108,6 +153,7 @@ def validate_score(request):
 		case.clips = clips
 		case.age_interval = age
 		case.location = location
+		case.asa = asa
 		case.anticoagulants = anticoagulants
 		case.maximum_size_mm = size
 		#Calculate case ids
@@ -148,8 +194,15 @@ def case_edit(request, pk):
 
 	user = UserProfile.objects.get(user = request.user)
 	case = get_object_or_404(Case, pk=pk)
+
+	if case.doctor != user:
+		return HttpResponseForbidden()
+
 	study = Study.objects.get(pk = case.study_id)
 	hospital = Hospital.objects.get(pk = user.hospital_id)
+
+	breadcrumbs = generate_breadcrumbs(study = study, case = case)
+
 	if request.method == "POST":
 	    form = CaseForm(request.POST, instance=case)
 	    if form.is_valid():
@@ -157,7 +210,14 @@ def case_edit(request, pk):
 	        return redirect('/study/'+str(study.pk)+'/')
 	else:
 	    form = CaseForm(instance=case)
-	return render(request, 'clips_app/case_edit.html', {'user_prof':user, 'clips': case.clips,'study':study, 'hospital':hospital, 'form': form, 'new': False})
+	return render(request, 'clips_app/case_edit.html', {
+		'user_prof':user,
+		'clips': case.clips,'study':study,
+		'hospital':hospital,
+		'form': form,
+		'new': False,
+		'breadcrumbs':breadcrumbs
+		})
 
 
 @login_required
@@ -169,7 +229,13 @@ def study_info(request, study_id):
 	user = UserProfile.objects.get(user = request.user)
 	study = Study.objects.get(pk = study_id)
 
-	return render(request, 'clips_app/study_info.html', {'user_prof':user, 'study_id':study.pk})
+	breadcrumbs = generate_breadcrumbs(study = study, info = True)
+
+	return render(request, 'clips_app/study_info.html', {
+		'user_prof':user,
+		'study_id':study.pk,
+		'breadcrumbs':breadcrumbs
+		})
 
 
 @login_required
