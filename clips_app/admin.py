@@ -34,7 +34,7 @@ class CaseAdmin(admin.ModelAdmin):
 			'platelets',
 			'inr',
 			'pt',
-			('aspirin', 'anticoagulants', 'antiplatelet_anticoagulant'),
+			('aspirin', 'anticoagulants'),
 			('heparinbridgetherapy', 'nombre_p_activo_antiagreg_anticoag'),
 			'day_of_reintroduction_antiagregant',
 			)
@@ -68,7 +68,7 @@ class CaseAdmin(admin.ModelAdmin):
 			('histology', 'histol_simplified'),
 			'time_of_procedure_in_mins',
 			'difficulty_of_emr',
-			('accesibility', 'resection', 'resection_yn'),
+			('accesibility', 'resection'),
 			('previous_biopsy', 'previous_attempt'),
 			'non_lifting_sign',
 			('technique','technique_two'),
@@ -77,7 +77,7 @@ class CaseAdmin(admin.ModelAdmin):
 			'endocut',
 			'electrosurgical_generator_model',
 			'polyp_retrieval',
-			('argon_PC', 'argon_coagulacion'),
+			('argon_PC'),
 			('snare_tip_soft_coagulation', 'coagulation_forceps' )
 			)
 		}),
