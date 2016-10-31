@@ -14,7 +14,7 @@ function calculate_score(){
 		score += 1;
 	}
 
-	if ($("#id_anticoagulants").val() == 5 || $("#id_anticoagulants").val() == 6 ){
+	if ($("#id_anticoagulants").val() > 0 ){
 		score += 2;
 	}
 

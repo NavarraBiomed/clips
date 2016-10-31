@@ -87,7 +87,7 @@ def calculate_score(case):
 		score += 1
 
 
-	if case.anticoagulants != None and case.anticoagulants in [5, 6]:
+	if case.anticoagulants != None and case.anticoagulants > 0:
 		score +=2
 
 	if case.location !=None and case.location >= 4:
