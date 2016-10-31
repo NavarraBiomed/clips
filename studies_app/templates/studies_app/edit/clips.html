@@ -1,4 +1,4 @@
-{% extends 'clips_app/base.html' %}
+{% extends 'studies_app/base.html' %}
 {% load material_form %}
     {% block content %}
 <div class="card card-expand box-shadow">
@@ -11,14 +11,14 @@
       {% form %}
           {% part form.study %}
             <div class="input-field col s12" id="id_study_container">
-              <i class="mdi-action-assignment prefix"></i>
+              <i class="material-icons card-cell-icon">assignment_ind</i>
               <input id="id_study_name"  type="text" value="{{study}}" readonly>
               <input id="id_study"  name = "study" type="hidden" value="{{study.pk}}" readonly>
               <label class="active" for="id_study">Study</label>
             </div>
           {% endpart %}
-          {% part form.clips %}
-            <input id = "id_clips" name = "clips" type ="hidden" value="{{clips}}" />
+          {% part form.group %}
+            <input id = "id_group" name = "treatment_group" type ="hidden" value="{{group}}" />
             <div class="input-field col s12" id="id_clips_container">
             <i class="mdi-action-info prefix"></i>
             <input id="id_clips_name"   type="text" value=
@@ -30,7 +30,7 @@
                     "-----------"
                     {% endif %}
                      readonly>
-            <label class="active" for="id_clips">Clips</label>
+            <label class="active" for="id_group">Group</label>
           </div>
           {% endpart %}
           {% part form.hospital %}

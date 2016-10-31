@@ -1,0 +1,11 @@
+.result-row{
+	display: flex;
+	margin-top: 1em;
+	justify-content:space-around;
+}
+
+.input-field {
+    position: relative;
+    margin-top: 0.75em;
+    margin-right: 4em;
+}

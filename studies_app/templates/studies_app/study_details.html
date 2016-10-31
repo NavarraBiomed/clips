@@ -1,0 +1,37 @@
+{% extends 'studies_app/base_graphs.html' %}
+{% load staticfiles %}
+{% block header_2 %}
+<link rel="stylesheet" href="{% static 'css/study_details.css' %}">
+{% endblock header_2 %}
+
+{% block content %}
+	<div class="card card-expand box-shadow">
+	<div class="card-corner-button green-text-dark"><a href = "{% url 'studies_app.views.study_info' study_id=study.pk %}"><i class="mdi-action-info prefix"></i></a></div>
+	<div class="card-title">Study '{{study}}' for {{user_prof}}</div>
+	<div id="studies-table" class="card-table green-text">
+	{%  for case in cases  %}
+			<a  href = "{% url 'case_edit' case_pk=case.pk study_pk=study.pk %}">
+			<div class="case card-cell">
+
+				<div class = "card-cell-title study-name" >
+					 <span>{{case}}</span>
+				</div>
+				<div class="card-cell-icon-div">
+					<i class="material-icons card-cell-icon">subject</i>
+				</div>
+			</div>
+			</a>
+
+	{% endfor %}
+	</div>
+	</div>
+	<div class="fixed-action-btn" style="bottom: 3em; right: 5em;">
+	    <a class="btn-floating btn-large red"  href = "{% url 'studies_app.views.new_case' study_id=study.pk %}">
+	      <i class="material-icons">add</i>
+	    </a>
+	</div>
+	<div class="card card-expand box-shadow">
+	<div class="card-title">Cases by hospital</div>
+	<div id="hospital-bar-chart"></div>
+	</div>
+{% endblock content %}

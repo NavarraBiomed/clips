@@ -219,7 +219,7 @@ _CLIPS = (
 	(0, "Control group"),
 	(1, "Treatment group")
 	)
- 
+
 _CLIPS_CONTROL = (
 	(0, "No"),
 	(1, "Punctual coagulation")
@@ -343,14 +343,15 @@ class Study(models.Model):
 	class Meta:
 		verbose_name_plural = "Studies"
 
+"""
 class UserProfile(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="clips_userprofile")
 	hospital = models.ForeignKey('Hospital')
 	studies = models.ManyToManyField('Study')
 
 	def __str__(self):
 		return str(self.user)
-
+"""
 
 class Case(models.Model):
 
@@ -365,7 +366,7 @@ class Case(models.Model):
 	study = models.ForeignKey('Study', default = None , blank= True, null = True)
 	clips = models.IntegerField(verbose_name = "Clips", choices = _CLIPS, blank= True, null = True)
 	hospital = models.ForeignKey('Hospital', default = None , blank= True, null = True)
-	doctor = models.ForeignKey('UserProfile', verbose_name = "Doctor", blank= True, null = True)
+	doctor = models.ForeignKey('studies_app.UserProfile', verbose_name = "Doctor", blank= True, null = True)
 	date = models.DateField(verbose_name = "Date", blank= True, null = True)
 	#name = models.CharField(verbose_name = "Name", max_length = 2, blank= True, null = True)
 	#id_number = models.CharField(verbose_name = "ID Number", max_length = 10, blank= True, null = True) #length
@@ -377,7 +378,7 @@ class Case(models.Model):
 	age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, max_length = 2, blank= True, null = True) #nombre en español?
 	sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, max_length = 1, blank= True, null = True)
 	asa = models.IntegerField(verbose_name = "ASA", choices = _ASA , blank= True, null = True)
-	hypertension = models.IntegerField(verbose_name = "Hypertension", choices = _NO_YES, blank= True, null = True) 
+	hypertension = models.IntegerField(verbose_name = "Hypertension", choices = _NO_YES, blank= True, null = True)
 	hb = models.IntegerField(verbose_name = "HB", blank= True, null = True)
 	platelets = models.IntegerField(verbose_name = "Platelets", blank= True, null = True)
 	inr = models.FloatField(verbose_name = "INR", blank= True, null = True) #max-min ?
@@ -386,7 +387,7 @@ class Case(models.Model):
 	anticoagulants = models.IntegerField(verbose_name = "Anticoagulants", choices = _ANTICOAGULANT, blank= True, null = True)
 	heparinbridgetherapy = models.IntegerField(verbose_name = "Heparin Bridge Therapy", choices = _NO_YES, blank= True, null = True)
 	nombre_p_activo_antiagreg_anticoag = models.IntegerField(verbose_name = "Active ingredients anticoagulant/antiagregant", blank= True, null = True)
-	day_of_reintroduction_antiagregant = models.IntegerField(verbose_name = "Day of reintroduction anticoagulant/antiagregant", blank= True, null = True) 
+	day_of_reintroduction_antiagregant = models.IntegerField(verbose_name = "Day of reintroduction anticoagulant/antiagregant", blank= True, null = True)
 	paris_calif = models.IntegerField(verbose_name = "Paris Clasif.", choices = _PARIS, blank= True, null = True)
 	lst_yn = models.IntegerField(verbose_name = "LST yn", choices= _NO_YES, blank= True, null = True)
 	lst_morphology = models.IntegerField(verbose_name = "LST Morphology", choices = _MORPHOLOGY, blank= True, null = True)
@@ -405,7 +406,7 @@ class Case(models.Model):
 	nbi_sano = models.IntegerField(verbose_name = "NBI sano", choices = _NBI_SANO, blank= True, null = True) #nombre en español?
 	nbi_nice = models.IntegerField(verbose_name = "NBI NICE", choices = _NBI_NICE, blank= True, null = True) #NICE son siglas?
 	cromoendoscopy = models.IntegerField(verbose_name = "Cromoendoscopy", choices = _NO_YES, blank= True, null = True)
-	kudo = models.IntegerField(verbose_name = "Kudo", choices = _KUDO, blank= True, null = True) 
+	kudo = models.IntegerField(verbose_name = "Kudo", choices = _KUDO, blank= True, null = True)
 	prepathologic_endoscopic_diagnostic_a = models.IntegerField(verbose_name = "Prepathologic endoscopic diagnost 1", choices = _PED_A , blank= True, null = True)
 	prepathologic_endoscopic_diagnostic_b = models.IntegerField(verbose_name = "Prepathologic endoscopic diagnost 2", choices = _PED_B , blank= True, null = True)
 	correct_dx_adenoma_serrated = models.IntegerField(verbose_name = "Correct Dx Adenoma Serrated", choices = _NO_YES, blank= True, null = True)

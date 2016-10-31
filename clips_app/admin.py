@@ -6,16 +6,16 @@ from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
 
-from .models import Case, Study, Hospital, UserProfile
+from .models import Case, Study, Hospital
 
 class CaseAdmin(admin.ModelAdmin):
-	
+
 	formfield_overrides = {
 		models.IntegerField: {'widget': forms.NumberInput},
     }
 
 
-    
+
 	fieldsets = (
 		('Hospital info', {
 		'fields': (
@@ -41,22 +41,22 @@ class CaseAdmin(admin.ModelAdmin):
 		}),
 		('Polyp characteristics', {
 		'classes': ('suit-tab', 'suit-tab-general',),
-		'fields': (			
+		'fields': (
 			'paris_calif',
 			('lst_yn','lst_morphology'),
 			'large_nodule_one_cm',
 			'demacrated_depressed_area',
 			'sclerous_wall_change',
 			'fold_convergency',
-			'chicken_skin_mucosa_around',	
-			('maximum_size_mm', 'area_square_cm'),	
+			'chicken_skin_mucosa_around',
+			('maximum_size_mm', 'area_square_cm'),
 			'location',
 			'ileocecal_valve_involvement',
 			)
 
 		}),
 		('Technical considerations', {
-		'fields': (			
+		'fields': (
 			'high_definition',
 			'endoscopemodel',
 			('nbi', 'nbi_sano', 'nbi_nice'),
@@ -110,7 +110,7 @@ class CaseAdmin(admin.ModelAdmin):
 		('Follow up', {
 		'fields': (
 			'follow_up_months',
-			'successful_treatment',			
+			'successful_treatment',
 			'last_date_endoscopic_follow_up',
 			('recurrence_three_six_months_control', 'recurrenec_one_year_control', 'global_recurrence'),
 
@@ -121,7 +121,7 @@ class CaseAdmin(admin.ModelAdmin):
 			'other_complications_comments',
 			'other_comments',
 			)
-		}),                 	
+		}),
 	)
 
 	suit_form_tabs = (
@@ -132,13 +132,3 @@ class CaseAdmin(admin.ModelAdmin):
 admin.site.register(Hospital)
 admin.site.register(Study)
 admin.site.register(Case, CaseAdmin)
-
-admin.site.unregister(User)
-
-class UserProfileInline(admin.StackedInline):
-    model = UserProfile
-
-class UserProfileAdmin(UserAdmin):
-    inlines = [UserProfileInline]
-
-admin.site.register(User, UserProfileAdmin)

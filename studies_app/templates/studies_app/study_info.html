@@ -1,0 +1,18 @@
+{% extends 'studies_app/base_graphs.html' %}
+{% load staticfiles %}
+
+{% block content %}
+		<div class="card card-expand box-shadow">
+			<div class="card-title">Cases by group</div>
+			<div id="clips-pie-chart"></div>
+		</div>
+		<div class="card card-expand box-shadow">
+			<div class="card-title">Cases by doctor</div>
+			<div id="user-bar-chart"></div>
+		</div>
+		<div class="card card-expand box-shadow">
+			<div class="card-title">Cases by hospital</div>
+			<div id="hospital-bar-chart"></div>
+		</div>
+
+{% endblock content %}

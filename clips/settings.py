@@ -33,7 +33,7 @@ LANGUAGE_CODE = 'en-us'
 # Application definition
 
 INSTALLED_APPS = (
-    'material',    
+    'material',
     'material.admin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,7 +41,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'clips_app',
+
+    'studies_app',
 )
 
 MIDDLEWARE_CLASSES = (

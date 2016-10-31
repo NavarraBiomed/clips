@@ -1,0 +1,18 @@
+{% extends 'clips_app/base.html' %}
+{% load material_form %}
+    {% block content %}
+<div class="card card-expand box-shadow">
+  <div class="card-title">{% if new %}
+        New case
+        {% else %}
+        Edit case
+        {% endif %}</div>
+  <form method="POST" class="viewform">{% csrf_token %}
+      {% form %}
+          
+      {% endform %}
+      <button type="submit" name="_submit" class="btn btn-primary btn-lg">Submit</button>
+  </form>
+</div>
+
+    {% endblock %}

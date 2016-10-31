@@ -1,4 +1,4 @@
-{% extends 'clips_app/base.html' %}
+{% extends 'studies_app/base.html' %}
 {% load material_form %}
     {% block content %}
 <div class="card card-expand box-shadow">
@@ -12,35 +12,28 @@
           {% part form.study %}
             <div class="input-field col s12" id="id_study_container">
               <i class="mdi-action-assignment prefix"></i>
-              <input id="id_study_name"  type="text" value="{{study}}" readonly>
+              <input id="id_study_name"  type="text" value="{{study.name}}" readonly>
               <input id="id_study"  name = "study" type="hidden" value="{{study.pk}}" readonly>
               <label class="active" for="id_study">Study</label>
             </div>
           {% endpart %}
-          {% part form.clips %}
-            <input id = "id_clips" name = "clips" type ="hidden" value="{{clips}}" />
-            <div class="input-field col s12" id="id_clips_container">
+          {% part form.group %}
+            <input id = "id_group" name = "group" type ="hidden" value="{{group}}" />
+            <div class="input-field col s12" id="id_group_container">
             <i class="mdi-action-info prefix"></i>
-            <input id="id_clips_name"   type="text" value=
-                    {% if clips == 0 %}
+            <input id="id_group_name"   type="text" value=
+                    {% if group == 0 %}
                     "Control group"
-                    {% elif clips == 1 %}
+                    {% elif group == 1 %}
                     "Treatment group"
                     {% else %}
                     "-----------"
                     {% endif %}
                      readonly>
-            <label class="active" for="id_clips">Clips</label>
+            <label class="active" for="id_group">Group</label>
           </div>
           {% endpart %}
-          {% part form.hospital %}
-            <div class="input-field col s12" id="id_hospital_container">
-              <i class="mdi-maps-local-hospital prefix"></i>
-              <input id="id_hospital_name"  type="text" value="{{hospital}}" readonly>
-              <input id="id_hospital" name = "hospital" type="hidden" value="{{hospital.pk}}" readonly>
-              <label class="active" for="id_hospital">Hospital</label>
-            </div>
-          {% endpart %}
+
           {% part form.doctor %}
             <div class="input-field col s12" id="id_doctor_container">
               <i class="mdi-action-account-box  prefix"></i>
@@ -48,10 +41,17 @@
               <input id="id_doctor"  name = "doctor" type="hidden" value="{{user_prof.pk}}" readonly>
               <label class="active" for="id_doctor">Doctor</label>
             </div>
+            <div class="input-field col s12" id="id_hospital_container">
+              <i class="mdi-maps-local-hospital prefix"></i>
+              <input id="id_hospital_name"  type="text" value="{{hospital}}" readonly>
+              <input id="id_hospital" name = "hospital" type="hidden" value="{{hospital.pk}}" readonly>
+              <label class="active" for="id_hospital">Hospital</label>
+            </div>
           {% endpart %}
       {% endform %}
       <button type="submit" name="_submit" class="btn btn-primary btn-lg">Submit</button>
   </form>
 </div>
+
 
     {% endblock %}

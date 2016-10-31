@@ -1,0 +1,20 @@
+{% extends 'studies_app/base.html' %}
+{% load staticfiles %}
+{% block extra_header %}
+<link rel="stylesheet" href="{% static 'css/scoretable.css' %}">
+
+{% endblock extra_header %}
+
+{% block content %}
+		<div class="card card-expand box-shadow">
+		<div class="card-title">New study</div>
+		<div id="studies-table" class=" green-text">
+		<form action="{% url 'studies_app.views.validate_case' study_id=study_id %}" method="POST">{% csrf_token %}
+			<input id="study" name="study_id" type="hidden" value="{{study_id}}"/>
+
+      <div id="buttons-row">
+      <button id="submit_button" type="submit" class="btn btn-primary btn-lg">Done</button>
+      </div>
+		</div>
+		</div>
+{% endblock content %}
