@@ -101,9 +101,3 @@ USE_L10N = True
 USE_TZ = True
 
 LOGIN_REDIRECT_URL = '/'
-
-try:
-    from local_settings import *
-except ImportError:
-    pass
-
