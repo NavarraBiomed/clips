@@ -7,13 +7,13 @@
 
 {% block content %}
 		<div class="card card-expand box-shadow">
-		<div class="card-title">New study</div>
+		<div class="card-title">New case</div>
 		<div id="studies-table" class=" green-text">
 		<form action="{% url 'studies_app.views.validate_case' study_id=study_id %}" method="POST">{% csrf_token %}
 			<input id="study" name="study_id" type="hidden" value="{{study_id}}"/>
-
+            <input id = "id_group" name = "group" type ="hidden" value="{{group}}" />
       <div id="buttons-row">
-      <button id="submit_button" type="submit" class="btn btn-primary btn-lg">Done</button>
+      <button id="submit_button" type="submit" class="btn btn-primary btn-lg">Add Case</button>
       </div>
 		</div>
 		</div>

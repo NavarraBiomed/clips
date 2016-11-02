@@ -17,6 +17,8 @@ def get_form_from_case(case, **kwargs ):
         return CancerForm(post, instance = case)
     elif study_type == "observational":
         return ObservationalForm(post, instance = case)
+    elif study_type == "obsinternational":
+        return ObsinternationalForm(post, instance = case)
 
 class CaseForm(forms.ModelForm):
 
@@ -44,6 +46,7 @@ class CancerForm(CaseForm):
     )
 
 class ObservationalForm(CaseForm):
+
     class Meta:
         model = ObservationalCase
         exclude = ('id_for_doctor', 'id_for_hospital')
@@ -138,6 +141,14 @@ class ObservationalForm(CaseForm):
                 Row('other_comments',),
             )
     )
+
+class ObsinternationalForm(ObservationalForm):
+    def __init__(self, *args, **kwargs):
+        super(ObservationalForm, self).__init__(*args, **kwargs)
+
+        mandatory_fields = ["sex","hb"]
+        for key in mandatory_fields:
+            self.fields[key].required = True
 
 class ClipsForm(CaseForm):
 	#, LayoutMixin, View

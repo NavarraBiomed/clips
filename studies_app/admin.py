@@ -19,7 +19,7 @@ class HospitalAdmin(admin.ModelAdmin):
 admin.site.register(CancerCase)
 admin.site.register(ClipsCase)
 admin.site.register(ObservationalCase)
-
+admin.site.register(ObsinternationalCase)
 
 #Delete this line to let clips_app to take over the users
 admin.site.unregister(User)
