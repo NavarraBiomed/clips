@@ -453,8 +453,8 @@ class ClipsCase(TypeCase):
 
     date = models.DateField(verbose_name = "Date", blank= True, null = True)
     age = models.IntegerField(verbose_name = "Age", validators = [MinValueValidator(0)], blank= True, null = True)
-    age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, max_length = 2, blank= True, null = True) #nombre en español?
-    sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, max_length = 1, blank= True, null = True)
+    age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
+    sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, blank= True, null = True)
     asa = models.IntegerField(verbose_name = "ASA", choices = _ASA , blank= True, null = True)
     hypertension = models.IntegerField(verbose_name = "Hypertension", choices = _NO_YES, blank= True, null = True)
     hb = models.FloatField(verbose_name = "HB (g/dL)", blank= True, null = True)
@@ -663,8 +663,8 @@ class ObservationalCase(TypeCase):
     date = models.DateField(verbose_name = "Date", blank= True, null = True)
     age = models.IntegerField(verbose_name = "Age", validators = [MinValueValidator(0)], blank= True, null = True)
 
-    age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, max_length = 2, blank= True, null = True) #nombre en español?
-    sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, max_length = 1, blank= True, null = True)
+    age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
+    sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, blank= True, null = True)
     asa = models.IntegerField(verbose_name = "ASA", choices = _ASA , blank= True, null = True)
     hypertension = models.IntegerField(verbose_name = "Hypertension", choices = _NO_YES, blank= True, null = True)
     hb = models.FloatField(verbose_name = "HB (g/dL)", blank= True, null = True)
@@ -796,8 +796,8 @@ class ObsinternationalCase(TypeCase):
     date = models.DateField(verbose_name = "Date", blank= True, null = True)
     age = models.IntegerField(verbose_name = "Age", validators = [MinValueValidator(0)], blank= True, null = True)
 
-    age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, max_length = 2, blank= True, null = True) #nombre en español?
-    sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, max_length = 1, blank= True, null = True)
+    age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
+    sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, blank= True, null = True)
     asa = models.IntegerField(verbose_name = "ASA", choices = _ASA , blank= True, null = True)
     hypertension = models.IntegerField(verbose_name = "Hypertension", choices = _NO_YES, blank= True, null = True)
     hb = models.FloatField(verbose_name = "HB (g/dL)", blank= True, null = True)
