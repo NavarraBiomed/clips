@@ -122,7 +122,7 @@ def case_edit(request, study_pk, case_pk):
             'group': case.group,
             'study':study,
             'form': form,
-            'new': False,
+            'new': True,
             'breadcrumbs':breadcrumbs
             })
 
