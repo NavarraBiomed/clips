@@ -586,7 +586,7 @@ class ClipsCase(TypeCase):
             if case.maximum_size_mm != None and case.maximum_size_mm >= 40:
                 score += 1
 
-            if case.anticoagulants != None and case.anticoagulants in [5, 6]:
+            if case.anticoagulants != None and case.anticoagulants > 0:
                 score +=2
 
             if case.location !=None and case.location >= 4:
@@ -598,7 +598,7 @@ class ClipsCase(TypeCase):
             return score
 
         score = calculate_score(case)
-
+        import pdb; pdb.set_trace()
         if score >= 4:
             case.save()
             return case.pk
