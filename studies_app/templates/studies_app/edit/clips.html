@@ -11,36 +11,29 @@
       {% form %}
           {% part form.study %}
             <div class="input-field col s12" id="id_study_container">
-              <i class="material-icons card-cell-icon">assignment_ind</i>
-              <input id="id_study_name"  type="text" value="{{study}}" readonly>
+              <i class="mdi-action-assignment prefix"></i>
+              <input id="id_study_name"  type="text" value="{{study.name}}" readonly>
               <input id="id_study"  name = "study" type="hidden" value="{{study.pk}}" readonly>
               <label class="active" for="id_study">Study</label>
             </div>
           {% endpart %}
           {% part form.group %}
-            <input id = "id_group" name = "treatment_group" type ="hidden" value="{{group}}" />
-            <div class="input-field col s12" id="id_clips_container">
+            <input id = "id_group" name = "group" type ="hidden" value="{{group}}" />
+            <div class="input-field col s12" id="id_group_container">
             <i class="mdi-action-info prefix"></i>
-            <input id="id_clips_name"   type="text" value=
-                    {% if clips == 0 %}
+            <input id="id_group_name"   type="text" value=
+                    {% if group == 0 %}
                     "Control group"
-                    {% elif clips == 1 %}
+                    {% elif group == 1 %}
                     "Treatment group"
                     {% else %}
                     "-----------"
                     {% endif %}
                      readonly>
             <label class="active" for="id_group">Group</label>
-          </div>
-          {% endpart %}
-          {% part form.hospital %}
-            <div class="input-field col s12" id="id_hospital_container">
-              <i class="mdi-maps-local-hospital prefix"></i>
-              <input id="id_hospital_name"  type="text" value="{{hospital}}" readonly>
-              <input id="id_hospital" name = "hospital" type="hidden" value="{{hospital.pk}}" readonly>
-              <label class="active" for="id_hospital">Hospital</label>
             </div>
           {% endpart %}
+
           {% part form.doctor %}
             <div class="input-field col s12" id="id_doctor_container">
               <i class="mdi-action-account-box  prefix"></i>
@@ -48,10 +41,52 @@
               <input id="id_doctor"  name = "doctor" type="hidden" value="{{user_prof.pk}}" readonly>
               <label class="active" for="id_doctor">Doctor</label>
             </div>
+            <div class="input-field col s12" id="id_hospital_container">
+              <i class="mdi-maps-local-hospital prefix"></i>
+              <input id="id_hospital_name"  type="text" value="{{hospital}}" readonly>
+              <input id="id_hospital" name = "hospital" type="hidden" value="{{hospital.pk}}" readonly>
+              <label class="active" for="id_hospital">Hospital</label>
+            </div>
           {% endpart %}
+
+          {% part form.clips_control_group %}
+                {% if group == 0 %}
+                <div class="layout-row row"><div class="col s12 m12">
+                <div class="row">
+                 <label for="id_clips_control_group">Clips control group</label>
+                    <select id="id_clips_control_group" name="clips_control_group" class="initialized">
+                     <option value="">---------</option>
+                     <option value="0" {% if case.clips_control_group == 0 %}selected {% endif %}>No</option>
+                     <option value="1" {% if case.clips_control_group == 1 %}selected {% endif %}>Punctual coagulation</option>
+                 </select>
+                </div>
+            </div></div>
+                 {% endif %}
+          {% endpart %}
+
+
+          {% part form.clips_tratment_group %}
+                {% if group == 1 %}
+                <div class="layout-row row"><div class="col s12 m12">
+                <div class="row">
+                <label for="id_clips_tratment_group">Clips treatment group</label>
+                <select id="id_clips_tratment_group" name="clips_tratment_group" class="initialized">
+                    <option value="">---------</option>
+                    <option value="1" {% if case.clips_tratment_group == 1 %}selected {% endif %}>Complete closure with complete mucosal apposition</option>
+                    <option value="2" {% if case.clips_tratment_group == 2 %}selected {% endif %}>Complete closure without complete mucosal apposition</option>
+                    <option value="3" {% if case.clips_tratment_group == 3 %}selected {% endif %}>Total failed closure</option>
+                    <option value="4" {% if case.clips_tratment_group == 4 %}selected {% endif %}>Partial failed closure</option>
+                    <option value="5" {% if case.clips_tratment_group == 5 %}selected {% endif %}>Closure not tried</option>
+                </select>
+                </div>
+                </div></div>
+                {% endif %}
+          {% endpart %}
+
       {% endform %}
       <button type="submit" name="_submit" class="btn btn-primary btn-lg">Submit</button>
   </form>
 </div>
+
 
     {% endblock %}

@@ -9,18 +9,24 @@ from django.views.generic.edit import FormView
 def get_form_from_case(case, **kwargs ):
     #import pdb; pdb.set_trace()
     post = kwargs.get('post', None)
+    hidden_fields = kwargs.get('hidden_fields', [])
     study_type = case.study.study_type
 
     if study_type == "clips":
-        return ClipsForm(post,instance = case)
+        return ClipsForm(post,instance = case, hidden_fields=hidden_fields)
     elif study_type == "cancer":
-        return CancerForm(post, instance = case)
+        return CancerForm(post, instance = case, hidden_fields=hidden_fields)
     elif study_type == "observational":
-        return ObservationalForm(post, instance = case)
+        return ObservationalForm(post, instance = case, hidden_fields=hidden_fields)
     elif study_type == "obsinternational":
-        return ObsinternationalForm(post, instance = case)
+        return ObsinternationalForm(post, instance = case, hidden_fields=hidden_fields)
 
 class CaseForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        hidden_fields = kwargs.pop('hidden_fields', [])
+        super(CaseForm, self).__init__(*args, **kwargs)
+
 
     class Meta:
         abstract = True
@@ -153,6 +159,7 @@ class ObsinternationalForm(ObservationalForm):
 class ClipsForm(CaseForm):
 	#, LayoutMixin, View
     #ClipsCase = apps.get_model('studies_app', 'ClipsCase')
+
     class Meta:
         model = ClipsCase
         exclude = ('id_for_doctor', 'id_for_hospital')

@@ -96,7 +96,7 @@ def case_edit(request, study_pk, case_pk):
 
     if request.method == "POST":
 
-        form = get_form_from_case(case, post=request.POST)
+        form = get_form_from_case(case, post=request.POST, hidden_fields=['clips_tratment_group'])
         #form = CancerForm(request.POST, instance = case)
         if form.is_valid():
             case.save()
@@ -108,13 +108,14 @@ def case_edit(request, study_pk, case_pk):
                 'group': case.group,
                 'study':study,
                 'form': form,
+                'case':case,
                 'new': False,
                 'breadcrumbs':breadcrumbs
                 })
 
             #raise Exception("Form isn't valid. Form type: {}".format( type(form) ))
     else:
-        form = get_form_from_case(case)
+        form = get_form_from_case(case, hidden_fields=['clips_tratment_group'])
         #import pdb; pdb.set_trace()
         return render(request, form.template, {
             'user_prof':user,
@@ -122,6 +123,7 @@ def case_edit(request, study_pk, case_pk):
             'group': case.group,
             'study':study,
             'form': form,
+            'case':case,
             'new': True,
             'breadcrumbs':breadcrumbs
             })

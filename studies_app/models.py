@@ -464,7 +464,7 @@ class ClipsCase(TypeCase):
     aspirin = models.IntegerField(verbose_name = "Aspirin", choices = _ASPIRIN, blank= True, null = True)
     anticoagulants = models.IntegerField(verbose_name = "Anticoagulants", choices = _ANTICOAGULANT, blank= True, null = True)
     heparinbridgetherapy = models.IntegerField(verbose_name = "Heparin Bridge Therapy", choices = _NO_YES, blank= True, null = True)
-    nombre_p_activo_antiagreg_anticoag = models.IntegerField(verbose_name = "Active ingredients anticoagulant/antiagregant", blank= True, null = True)
+    nombre_p_activo_antiagreg_anticoag = models.CharField(verbose_name = "Active ingredients anticoagulant/antiagregant", max_length=128, blank= True, null = True)
     day_of_reintroduction_antiagregant = models.IntegerField(verbose_name = "Day of reintroduction anticoagulant/antiagregant", blank= True, null = True)
     paris_calif = models.IntegerField(verbose_name = "Paris Clasif.", choices = _PARIS, blank= True, null = True)
     lst_yn = models.IntegerField(verbose_name = "LST yn", choices= _NO_YES, blank= True, null = True)
@@ -598,7 +598,6 @@ class ClipsCase(TypeCase):
             return score
 
         score = calculate_score(case)
-        import pdb; pdb.set_trace()
         if score >= 4:
             case.save()
             return case.pk
@@ -674,7 +673,7 @@ class ObservationalCase(TypeCase):
     aspirin = models.IntegerField(verbose_name = "Aspirin", choices = _ASPIRIN, blank= True, null = True)
     anticoagulants = models.IntegerField(verbose_name = "Anticoagulants", choices = _ANTICOAGULANT, blank= True, null = True)
     heparinbridgetherapy = models.IntegerField(verbose_name = "Heparin Bridge Therapy", choices = _NO_YES, blank= True, null = True)
-    nombre_p_activo_antiagreg_anticoag = models.IntegerField(verbose_name = "Active ingredients anticoagulant/antiagregant", blank= True, null = True)
+    nombre_p_activo_antiagreg_anticoag = models.CharField(verbose_name = "Active ingredients anticoagulant/antiagregant", max_length=128, blank= True, null = True)
     day_of_reintroduction_antiagregant = models.IntegerField(verbose_name = "Day of reintroduction anticoagulant/antiagregant", blank= True, null = True)
     paris_calif = models.IntegerField(verbose_name = "Paris Clasif.", choices = _PARIS, blank= True, null = True)
     lst_yn = models.IntegerField(verbose_name = "LST yn", choices= _NO_YES, blank= True, null = True)
@@ -807,7 +806,7 @@ class ObsinternationalCase(TypeCase):
     aspirin = models.IntegerField(verbose_name = "Aspirin", choices = _ASPIRIN, blank= True, null = True)
     anticoagulants = models.IntegerField(verbose_name = "Anticoagulants", choices = _ANTICOAGULANT, blank= True, null = True)
     heparinbridgetherapy = models.IntegerField(verbose_name = "Heparin Bridge Therapy", choices = _NO_YES, blank= True, null = True)
-    nombre_p_activo_antiagreg_anticoag = models.IntegerField(verbose_name = "Active ingredients anticoagulant/antiagregant", blank= True, null = True)
+    nombre_p_activo_antiagreg_anticoag = models.CharField(verbose_name = "Active ingredients anticoagulant/antiagregant", max_length=128, blank= True, null = True)
     day_of_reintroduction_antiagregant = models.IntegerField(verbose_name = "Day of reintroduction anticoagulant/antiagregant", blank= True, null = True)
     paris_calif = models.IntegerField(verbose_name = "Paris Clasif.", choices = _PARIS, blank= True, null = True)
     lst_yn = models.IntegerField(verbose_name = "LST yn", choices= _NO_YES, blank= True, null = True)
