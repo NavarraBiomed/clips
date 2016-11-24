@@ -28,7 +28,7 @@ def generate_breadcrumbs(**kwargs):
 			breadcrumbs.append({'name':'New case', 'link':'/study/'+str(study.pk)+'/new'})
 
 		if case:
-			breadcrumbs.append({'name':case, 'link':'/case/'+str(case.pk)+'/edit'})
+			breadcrumbs.append({'name':case.short_name(), 'link':'/case/'+str(case.pk)+'/edit'})
 
 		if info:
 			breadcrumbs.append({'name':'Info', 'link':'/study/'+str(study.pk)+'/info'})

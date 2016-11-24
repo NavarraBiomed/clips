@@ -418,6 +418,9 @@ class TypeCase(models.Model):
     def __str__(self):
         return str(self.pk) + " (D-"+str(self.id_for_doctor) +" H-"+str(self.id_for_hospital)+")"
 
+    def short_name(self):
+        return str(self.id_for_doctor)+ " (H-" + str(self.id_for_hospital) + ")"
+
     """
     validate function takes the request and returns:
         None: if validation failed
