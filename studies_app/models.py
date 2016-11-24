@@ -390,6 +390,11 @@ class Study(models.Model):
     def get_cases(self):
         return getattr(self, "cases_" + self.study_type +"case" )
 
+    def refresh_cases_ids(self):
+        cases = self.get_cases().all()
+        for case in cases:
+            TypeCase.set_case_ids(case)
+
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="clips_userprofile")
@@ -422,27 +427,23 @@ class TypeCase(models.Model):
         pass
 
     def get_case_ids(case):
-        study = case.study
-        doctor = case.doctor
-        hospital = doctor.hospital
 
-        try:
-            last_id_for_doctor = study.get_cases().filter(doctor = doctor).latest('id_for_doctor').id_for_doctor
-        except:
-            last_id_for_doctor = None
+        older_cases = case.study.get_cases().filter(pk__lt=case.pk)
+        older_from_doctor = older_cases.filter(doctor= case.doctor)
+        older_from_hospital = older_cases.filter(doctor__hospital = case.doctor.hospital)
 
-        try:
-            last_id_for_hospital = study.get_cases().filter(hospital=hospital).latest('id_for_hospital').id_for_hospital
-        except:
-            last_id_for_hospital = None
+        id_for_doctor = len(older_from_doctor)+1
+        id_for_hospital = len(older_from_hospital)+1
 
-        if last_id_for_doctor == None:
-            last_id_for_doctor = 0
+        return (id_for_doctor, id_for_hospital)
 
-        if last_id_for_hospital == None:
-            last_id_for_hospital = 0
 
-        return (last_id_for_doctor+1, last_id_for_hospital+1)
+    def set_case_ids(case):
+        ids = TypeCase.get_case_ids(case)
+        if case.id_for_doctor != ids[0] or case.id_for_hospital != ids[1]:
+            case.id_for_doctor = ids[0]
+            case.id_for_hospital = ids[1]
+            case.save()
 
     class Meta:
         abstract = True
