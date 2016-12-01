@@ -575,9 +575,6 @@ class ClipsCase(TypeCase):
         case.anticoagulants = anticoagulants
         case.maximum_size_mm = size
 
-        ids = TypeCase.get_case_ids(case)
-        case.id_for_doctor = ids[0]
-        case.id_for_hospital = ids[1]
 
         def calculate_score(case):
             score = 0
@@ -603,6 +600,10 @@ class ClipsCase(TypeCase):
 
         score = calculate_score(case)
         if score >= 4:
+            case.save()
+            ids = TypeCase.get_case_ids(case)
+            case.id_for_doctor = ids[0]
+            case.id_for_hospital = ids[1]
             case.save()
             return case.pk
         else:
