@@ -432,7 +432,6 @@ class TypeCase(models.Model):
 
     def get_case_ids(case):
 
-        import  pdb; pdb.set_trace()
         if case.pk is None:
             older_cases = case.study.get_cases().all()
         else:
