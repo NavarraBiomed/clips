@@ -938,7 +938,7 @@ class ObsinternationalCase(TypeCase):
     date = models.DateField(verbose_name = "Date", blank= True, null = True)
     age = models.IntegerField(verbose_name = "Age", validators = [MinValueValidator(0)], blank= True, null = True)
 
-    id_number = models.IntegerField(verbose_name="ID Number", blank=True, null=True)
+    id_number = models.IntegerField(verbose_name="ID", blank=True, null=True)
     case_number = models.IntegerField(verbose_name="Case number", blank=True, null=True)
     endoscopist = models.CharField(verbose_name="Endoscopist", max_length=128, blank=True, null=True)
 
