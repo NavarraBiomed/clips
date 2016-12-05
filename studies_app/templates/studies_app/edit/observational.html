@@ -1,0 +1,57 @@
+{% extends 'studies_app/base.html' %}
+{% load staticfiles %}
+{% load material_form %}
+
+{% block extra_header %}
+<script src="{% static 'js/boston.js' %}"></script>
+{% endblock %}
+
+    {% block content %}
+<div class="card card-expand box-shadow">
+  <div class="card-title">{% if new %}
+        New case
+        {% else %}
+        Edit case
+        {% endif %}</div>
+  <form method="POST" class="viewform">{% csrf_token %}
+      {% form %}
+          {% part form.study %}
+            <div class="input-field col s12" id="id_study_container">
+              <i class="mdi-action-assignment prefix"></i>
+              <input id="id_study_name"  type="text" value="{{study.name}}" readonly>
+              <input id="id_study"  name = "study" type="hidden" value="{{study.pk}}" readonly>
+              <label class="active" for="id_study">Study</label>
+            </div>
+          {% endpart %}
+
+          {% part form.doctor %}
+            <div class="input-field col s12" id="id_doctor_container">
+              <i class="mdi-action-account-box  prefix"></i>
+              <input id="id_doctor_name"  type="text" value="{{user_prof.user.first_name}} {{user_prof.user.last_name}}" readonly>
+              <input id="id_doctor"  name = "doctor" type="hidden" value="{{user_prof.pk}}" readonly>
+              <label class="active" for="id_doctor">Doctor</label>
+            </div>
+            <div class="input-field col s12" id="id_hospital_container">
+              <i class="mdi-maps-local-hospital prefix"></i>
+              <input id="id_hospital_name"  type="text" value="{{hospital}}" readonly>
+              <input id="id_hospital" name = "hospital" type="hidden" value="{{hospital.pk}}" readonly>
+              <label class="active" for="id_hospital">Hospital</label>
+            </div>
+          {% endpart %}
+
+
+          {% part form.boston %}
+            <div class="input-field col s12" id="boston_container">
+              <i class="mdi-action-account-box  prefix"></i>
+              <input id="boston"  name = "boston"  value="0" readonly>
+              <label class="active" for="boston">Boston</label>
+            </div>
+          {% endpart %}
+
+      {% endform %}
+      <button type="submit" name="_submit" class="btn btn-primary btn-lg">Submit</button>
+  </form>
+</div>
+
+
+    {% endblock %}

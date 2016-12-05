@@ -198,7 +198,7 @@ _RESECTION = (
 	(1, "Piecemeal complete"),
 	(2, "Piecemeal incomplete"),
 	(3, "En bloc R0"),
-	(4, "En bloq incomplete")
+	(4, "En bloc incomplete")
 	)
 
 _RESECTION_YN = (
@@ -308,11 +308,12 @@ _IMMEDIATE_BLEEDING = (
 
 _BLEEDING_TREATMENT = (
 	(0, "No"),
-	(1, "Inyection"),
+	(1, "Injection"),
 	(2, "Clipping"),
 	(3, "ArgonPC"),
 	(4, "Coagulation forceps"),
-	(5, "2 methods")
+	(5, "2 methods"),
+    (6, 'Snare tip coagulation')
 	)
 
 _FEVER = (
@@ -431,7 +432,12 @@ class TypeCase(models.Model):
 
     def get_case_ids(case):
 
-        older_cases = case.study.get_cases().filter(pk__lt=case.pk)
+        import  pdb; pdb.set_trace()
+        if case.pk is None:
+            older_cases = case.study.get_cases().all()
+        else:
+            older_cases = case.study.get_cases().filter(pk__lt=case.pk)
+
         older_from_doctor = older_cases.filter(doctor= case.doctor)
         older_from_hospital = older_cases.filter(doctor__hospital = case.doctor.hospital)
 
@@ -535,8 +541,8 @@ class ClipsCase(TypeCase):
     pps = models.IntegerField(verbose_name = "Post polypectomy syndrome", choices = _NO_YES, blank= True, null = True) #PPS o Síndrome postpolipectomía?
     fever = models.IntegerField(verbose_name = "Fever", choices = _FEVER, blank= True, null = True)
     pain_requiring_medical_intervention = models.IntegerField(verbose_name = "Pain requiring medical intervantion", choices = _NO_YES, blank= True, null = True)
-    hospital_stay_by_technique = models.IntegerField(verbose_name = "Hospital stay by technique", blank= True, null = True)
-    hospital_stay_by_complication = models.IntegerField(verbose_name = "Hospital stay by complication", blank= True, null = True)
+    hospital_stay_by_technique = models.IntegerField(verbose_name = "Hospital stay by technique (days)", blank= True, null = True)
+    hospital_stay_by_complication = models.IntegerField(verbose_name = "Hospital stay by complication (days)", blank= True, null = True)
     follow_up_months = models.IntegerField(verbose_name = "Follow up months", blank= True, null = True)
     successful_treatment = models.IntegerField(verbose_name=" Successful treatment", choices = _SUCCESSFUL_TREATMENT, blank= True, null = True)
     sedation = models.IntegerField(verbose_name = "Sedation", choices = _SEDATION, blank= True, null = True)
@@ -612,14 +618,18 @@ class ClipsCase(TypeCase):
 
 #------------- EXTRA FOR Observational Study ---------
 
+_PLATELET_INTERVALS =(
+    (0, ">150.000"),
+    (1, "150.000-50.000"),
+    (2, "< 50.000")
+
+)
+
 _COLONOSCOPY_INDICATION=(
-    (1, 'Anemia/iron deficiency'),
-    (2, 'CRC suspected'),
-    (3, 'CRC screening program'),
-    (4, 'Postpolypectomy surveillance'),
-    (5, 'Relatives with CRC or polyposis'),
-    (6, 'Polyposis'),
-    (7, 'Other'),
+    (1, 'Symptoms'),
+    (2, 'CRC screening'),
+    (3, 'Follow up'),
+    (4, 'Referred to resection'),
     )
 
 _COUNTRY = (
@@ -639,7 +649,7 @@ _DEPTH = (
     )
 
 _BUDDING = (
-    (0, 'No' ),
+    (0, 'No or low grade' ),
     (1, 'High grade'),
     )
 
@@ -662,21 +672,144 @@ _FREE_MARGINS = (
     (3,'Affected')
     )
 
+_ANTICOAGULANT_ENGLISH = (
+	(0, "No"),
+	(1, "Aspirin"),
+	(2, "Clopidogrel"),
+	(3, "Other antiagregant"),
+	(4, "Warfarin"),
+	(5, "NSAID"),
+	(6, "2 NSAID including aspiring or not"),
+	(7, "Aspirin+clopidogrel"),
+	(8, "NACOs")
+	)
+
+_LOCATION_OBSERVATIONAL = (
+	(1, "Rectum"),
+	(2, "Left colon"),
+	(3, "Splenic flexure"),
+	(4, "Transverse"),
+	(5, "Hepatic flexure"),
+	(6, "Ascending"),
+	(7, "Cecum")
+	)
+
+_DIFFICULT_LOCATIONS=(
+    (1, 'Ileo-cecal valve'),
+    (2, 'Ileo-cecal valve+ distal ileum'),
+    (3, 'Dentate line'),
+    (4, 'Diverticula'),
+    (5, 'Appendix')
+)
+
+_LAXATIVE = (
+    (1,'4 litre polyethylene glycol (Bohm, Casenglicol)'),
+    (2,'Polyethylene gylcol plus ascorbate: 2 litres (Moviprep)'),
+    (3,'Sodium picosulfate, magnesium citrate (Citrafleet)'),
+    (4,'Fosfates (Fosfosoda)'),
+    (5, 'Sulfates (Eziclen)')
+)
+
+_LAXATIVE_SCHEDULE = (
+    (1, 'Day before of colonoscopy'),
+    (2, 'Split dose overnight'),
+    (3, 'Same day of colonoscopy')
+)
+
+_TECHNIQUE_OBSERVATIONAL = (
+    (1,'Patient sent to surgery '),
+    (2,'EMR'),
+    (3,'Hybrid EMR'),
+    (4,'ESD'),
+    (5,'Full-thickness resection')
+)
+
+_TREATMENT_RESIDUAL = (
+    (1,'Not necessary'),
+    (2,'APC'),
+    (3,'Snare tip coagulation'),
+    (4,'Cold avulsion plus coagulation'),
+    (5,'Hot avulsion'),
+    (6,'KAR (knife assisted resection)')
+)
+
+_INJECTION_ENG = (
+	(0, "No"),
+	(1, "Saline"),
+	(2, "Glycerol"),
+	(3, "Hyaluronic"),
+	(4, "Hydroxypropyl methylcellulose(Voluven®)"),
+	(5, "Succinylated gelatin (Gelafundina®)"),
+	(6, "Others")
+	)
+
+_DYE_SUBMUCOSAL = (
+    (0, 'No'),
+    (1, 'Indigo carmin'),
+    (3, 'Methylene blue') # <---- Trabajo para Walter White
+)
+
+_BOSTON_SCALE = (
+    (0, 'Solid'),
+    (1, 'Semisolid'),
+    (2, 'Liquid'),
+    (3, 'Excelent')
+)
+
+_HISTOLOGY_OBSERVATIONAL = (
+	(1, "Adenoma"),
+	(2, "HGD to intramucosal carcinoma in adenoma"),
+	(3, "Superficial submucosal carcinoma in adenoma"),
+	(4, "Deep submucosal carcinoma in adenoma"),
+	(5, "Hyperplastic"),
+	(6, "Sesil Serrated polyp"),
+	(7, "Traditional Serrated Adenoma"),
+	(8, "Polyp Serrated Mixed or serrated polyp with dysplasia"),
+	(9, "HGD to intramucosal carcinoma any serrated"),
+	(10, "Superficial submucosa carc. Any serrated"),
+	(11, "Deep submucosa carc. Any serrated"),
+	(12, "Carcinoid")
+	)
+
+_CLIPPING = (
+    (0, 'No'),
+    (1, 'Punctual (VISIBLE VESSEL)'),
+    (2, 'Partially clipped'),
+    (3, 'Complete clip closure'),
+)
+
+_SURGERY = (
+    (0,'No needed'),
+    (1,'Primary for technical reasons'),
+    (2,'Primary for suspected invasiveness'),
+    (3,'Due to bleeding'),
+    (4,'Due to perforation'),
+    (5,'Histological reasons'),
+    (6,'Clinical/patient decision'),
+)
+
+_SUCCESSFUL_TREATMENT_OBSERVATIONAL = (
+	(0, "No (surgery)"),
+	(1, "Yes (endoscopic treatment)")
+	)
+
+_SESSIONS_NEEDED= zip (range(1,10), range(1,10))
+
 class ObservationalCase(TypeCase):
 
     date = models.DateField(verbose_name = "Date", blank= True, null = True)
     age = models.IntegerField(verbose_name = "Age", validators = [MinValueValidator(0)], blank= True, null = True)
 
+    id_number = models.IntegerField(verbose_name="ID Number", blank=True, null=True)
+    case_number = models.IntegerField(verbose_name="Case number", blank=True, null=True)
+    endoscopist = models.CharField(verbose_name="Endoscopist", max_length=128, blank=True, null=True)
+
     age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
     sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, blank= True, null = True)
     asa = models.IntegerField(verbose_name = "ASA", choices = _ASA , blank= True, null = True)
     hypertension = models.IntegerField(verbose_name = "Hypertension", choices = _NO_YES, blank= True, null = True)
-    hb = models.FloatField(verbose_name = "HB (g/dL)", blank= True, null = True)
-    platelets = models.IntegerField(verbose_name = "Platelets (x10⁹/L)", blank= True, null = True)
-    inr = models.FloatField(verbose_name = "INR", blank= True, null = True) #max-min ?
-    pt = models.IntegerField(verbose_name = "PT (s)", blank= True, null = True)   #max-min ?
     aspirin = models.IntegerField(verbose_name = "Aspirin", choices = _ASPIRIN, blank= True, null = True)
-    anticoagulants = models.IntegerField(verbose_name = "Anticoagulants", choices = _ANTICOAGULANT, blank= True, null = True)
+    anticoagulants = models.IntegerField(verbose_name = "Anticoagulants", choices = _ANTICOAGULANT_ENGLISH, blank= True, null = True)
     heparinbridgetherapy = models.IntegerField(verbose_name = "Heparin Bridge Therapy", choices = _NO_YES, blank= True, null = True)
     nombre_p_activo_antiagreg_anticoag = models.CharField(verbose_name = "Active ingredients anticoagulant/antiagregant", max_length=128, blank= True, null = True)
     day_of_reintroduction_antiagregant = models.IntegerField(verbose_name = "Day of reintroduction anticoagulant/antiagregant", blank= True, null = True)
@@ -684,59 +817,43 @@ class ObservationalCase(TypeCase):
     lst_yn = models.IntegerField(verbose_name = "LST yn", choices= _NO_YES, blank= True, null = True)
     lst_morphology = models.IntegerField(verbose_name = "LST Morphology", choices = _MORPHOLOGY, blank= True, null = True)
     large_nodule_one_cm = models.IntegerField(verbose_name = "Large nodule 1cm", choices = _NO_YES, blank= True, null = True)
-    demacrated_depressed_area = models.IntegerField(verbose_name = "Demacrated depressed area", choices = _NO_YES, blank= True, null = True)
+    demarcated_depressed_area = models.IntegerField(verbose_name = "Demarcated depressed area", choices = _NO_YES, blank= True, null = True)
     sclerous_wall_change = models.IntegerField(verbose_name = "Sclerous wall change", choices = _NO_YES, blank= True, null = True)
     fold_convergency = models.IntegerField(verbose_name = "Fold convergency", choices = _NO_YES, blank= True, null = True)
     chicken_skin_mucosa_around = models.IntegerField(verbose_name = "Chicken skin mucosa around", choices = _NO_YES, blank= True, null = True)
     maximum_size_mm = models.IntegerField(verbose_name="Maximum size (mm)", blank= True, null = True)
     area_square_cm = models.IntegerField(verbose_name = "Area (cm2)", blank= True, null = True)
-    location = models.IntegerField(verbose_name = "Location", choices = _LOCATION, blank= True, null = True)
-    ileocecal_valve_involvement = models.IntegerField(verbose_name = "Ileocecal valve involvement", choices =_NO_YES, blank= True, null = True)
+    location = models.IntegerField(verbose_name = "Location", choices = _LOCATION_OBSERVATIONAL, blank= True, null = True)
     high_definition = models.IntegerField(verbose_name = "High definition", choices = _HIGH_DEFINITION, blank= True, null = True)
     endoscopemodel = models.CharField(verbose_name = "Endoscope model", max_length = 50, blank= True, null = True)
-    nbi = models.IntegerField(verbose_name = "NBI", choices = _NO_YES, blank= True, null = True)
-    nbi_sano = models.IntegerField(verbose_name = "NBI sano", choices = _NBI_SANO, blank= True, null = True) #nombre en español?
-    nbi_nice = models.IntegerField(verbose_name = "NBI NICE", choices = _NBI_NICE, blank= True, null = True) #NICE son siglas?
-    cromoendoscopy = models.IntegerField(verbose_name = "Cromoendoscopy", choices = _NO_YES, blank= True, null = True)
+    nbi = models.IntegerField(verbose_name = "NBI/FICE", choices = _NO_YES, blank= True, null = True)
+    nbi_sano = models.IntegerField(verbose_name = "SANO", choices = _NBI_SANO, blank= True, null = True) #nombre en español?
+    nbi_nice = models.IntegerField(verbose_name = "NICE", choices = _NBI_NICE, blank= True, null = True) #NICE son siglas?
+    chromoendoscopy = models.IntegerField(verbose_name = "Cromoendoscopy", choices = _NO_YES, blank= True, null = True)
     kudo = models.IntegerField(verbose_name = "Kudo", choices = _KUDO, blank= True, null = True)
     prepathologic_endoscopic_diagnostic_a = models.IntegerField(verbose_name = "Prepathologic endoscopic diagnost 1", choices = _PED_A , blank= True, null = True)
     prepathologic_endoscopic_diagnostic_b = models.IntegerField(verbose_name = "Prepathologic endoscopic diagnost 2", choices = _PED_B , blank= True, null = True)
     correct_dx_adenoma_serrated = models.IntegerField(verbose_name = "Correct Dx Adenoma Serrated", choices = _NO_YES, blank= True, null = True)
     correct_dx_invasion = models.IntegerField(verbose_name = "Correct Dx Invasion", choices = _NO_YES, blank= True, null = True)
-    histology = models.IntegerField(verbose_name = "Histology", choices = _HISTOLOGY, blank= True, null = True)
-    histol_simplified = models.IntegerField(verbose_name = "Histology simplified", choices = _HISTOLOGY_SIMP, blank= True, null = True)
+    histology = models.IntegerField(verbose_name = "Histology", choices = _HISTOLOGY_OBSERVATIONAL, blank= True, null = True)
     time_of_procedure_in_mins = models.IntegerField(verbose_name = "Time of procedure (m)", blank= True, null = True)
-    difficulty_of_emr = models.IntegerField(verbose_name = "Dificutly of EMR", choices = _DIFFICULTY, blank= True, null = True)
+    difficulty_of_emr = models.IntegerField(verbose_name = "Difficutly of EMR", choices = _DIFFICULTY, blank= True, null = True)
     accesibility = models.IntegerField(verbose_name = "Accesibility", choices = _DIFFICULTY, blank= True, null = True)
     resection = models.IntegerField(verbose_name = "Resection", choices = _RESECTION, blank= True, null = True)
     previous_biopsy = models.IntegerField(verbose_name = "Previous biopsy", choices = _NO_YES, blank= True, null = True)
     previous_attempt = models.IntegerField(verbose_name = "Previous attempt", choices = _NO_YES, blank= True, null = True)
     non_lifting_sign = models.IntegerField(verbose_name = "Non lifting sign", choices = _NO_YES, blank= True, null = True)
-    technique = models.IntegerField(verbose_name = "Technique", choices = _TECHNIQUE, blank= True, null = True)
-    technique_two  = models.IntegerField(verbose_name =" Technique 2", choices = _TECHNIQUE_TWO, blank= True, null = True)
-    limit_marks = models.IntegerField(verbose_name = "Limit marks", choices = _MARKS, blank= True, null = True)
-    injection = models.IntegerField(verbose_name = "Injection", choices = _INJECTION, blank= True, null = True)
+    limit_marks = models.IntegerField(verbose_name = "Limit marks", choices = _NO_YES, blank= True, null = True)
+    injection = models.IntegerField(verbose_name = "Injection", choices = _INJECTION_ENG, blank= True, null = True)
     adrenaline = models.IntegerField(verbose_name = "Adrenaline", choices = _NO_YES, blank= True, null = True)
     endocut = models.IntegerField(verbose_name = "Endocut/Blended", choices = _ENDOCUT, blank= True, null = True)
     electrosurgical_generator_model = models.CharField(verbose_name = "Electrosurgical generator model", max_length = 100, blank= True, null = True) #max_length?
-    polyp_retrieval = models.IntegerField(verbose_name = "Polyp retrieval", choices = _POLYP_RETRIEVAL, blank= True, null = True)
     argon_PC = models.IntegerField(verbose_name = "Argon PC", choices = _ARGON_PC, blank= True, null = True)
     coagulation_forceps = models.IntegerField(verbose_name = "Coagulation forceps", choices = _NO_YES, blank= True, null = True)
     snare_tip_soft_coagulation = models.IntegerField(verbose_name = "Snare tip soft coagulation", choices = _NO_YES, blank= True, null = True)
-    cs_cut_watts = models.IntegerField(verbose_name = "Cut (watts)", blank = True, null = True)
-    cs_cut_mode = models.IntegerField(verbose_name = "Endocut mode", choices = _ENDOCUT_MODE, blank= True, null = True )
-    cs_coagulation_watts = models.IntegerField(verbose_name = "Coagulation (watts)", blank = True, null = True)
-    cs_coagulation_mode = models.IntegerField(verbose_name = "Coagulation mode", choices = _COAGULATION, blank= True, null = True )
-    clips_control_group = models.IntegerField(verbose_name = "Clips control group", choices = _CLIPS_CONTROL, blank= True, null = True)
-    clips_tratment_group = models.IntegerField(verbose_name = "Clips treatment group", choices = _CLIPS_TREAT_GROUP, blank= True, null = True)
-    clips_n_lote = models.IntegerField(verbose_name = "Lot number", blank= True, null = True)
-    clips_exp_date = models.DateField(verbose_name = "Expiration date", blank= True, null = True)
-    not_tired_closure_by = models.IntegerField(verbose_name = "Closure not tried because of", choices = _NOT_TRIED, blank= True, null = True)
     closure_technique = models.IntegerField(verbose_name = "Closure technique", choices = _CLOSURE_TECHNIQUE, blank= True, null = True)
     number_clips_needed = models.IntegerField(verbose_name = "Number of clips needed", blank= True, null = True)
     perforation = models.IntegerField(verbose_name = "Perforation", choices = _PERFORATIOM, blank= True, null = True)
-    surgery_from_endoscopy = models.IntegerField(verbose_name = "Surgery from endoscopy", choices = _NO_YES, blank= True, null = True) #Cadena?
-    surgery_by_complication = models.IntegerField(verbose_name = "Surgery by complication", choices = _SURGERY_BY_COMPLICATION, blank= True, null = True)
     bleeding = models.IntegerField(verbose_name = "Bleeding", choices = _BLEEDING, blank= True, null = True)
     immediate_bleeding = models.IntegerField(verbose_name = "Immediate bleeding", choices = _IMMEDIATE_BLEEDING, blank= True, null = True)
     delayed_bleeding = models.IntegerField(verbose_name = "Delayed bleeding", choices = _NO_YES, blank= True, null = True)
@@ -745,10 +862,10 @@ class ObservationalCase(TypeCase):
     pps = models.IntegerField(verbose_name = "Post polypectomy syndrome", choices = _NO_YES, blank= True, null = True) #PPS o Síndrome postpolipectomía?
     fever = models.IntegerField(verbose_name = "Fever", choices = _FEVER, blank= True, null = True)
     pain_requiring_medical_intervention = models.IntegerField(verbose_name = "Pain requiring medical intervantion", choices = _NO_YES, blank= True, null = True)
-    hospital_stay_by_technique = models.IntegerField(verbose_name = "Hospital stay by technique", blank= True, null = True)
-    hospital_stay_by_complication = models.IntegerField(verbose_name = "Hospital stay by complication", blank= True, null = True)
+    hospital_stay_by_technique = models.IntegerField(verbose_name = "Hospital stay by technique (days)", blank= True, null = True)
+    hospital_stay_by_complication = models.IntegerField(verbose_name = "Hospital stay by complication (days)", blank= True, null = True)
     follow_up_months = models.IntegerField(verbose_name = "Follow up months", blank= True, null = True)
-    successful_treatment = models.IntegerField(verbose_name=" Successful treatment", choices = _SUCCESSFUL_TREATMENT, blank= True, null = True)
+    successful_treatment = models.IntegerField(verbose_name=" Successful treatment", choices = _SUCCESSFUL_TREATMENT_OBSERVATIONAL, blank= True, null = True)
     sedation = models.IntegerField(verbose_name = "Sedation", choices = _SEDATION, blank= True, null = True)
     last_date_endoscopic_follow_up = models.DateField(verbose_name="Last date endoscopic follow up", blank= True, null = True)
     recurrence_three_six_months_control = models.IntegerField(verbose_name = "Recurrence 3-6 months control", choices = _RECURRENCE_THREE_SIX, blank= True, null = True)
@@ -770,6 +887,26 @@ class ObservationalCase(TypeCase):
     histological_variants = models.IntegerField(verbose_name="Histological variants", choices= _HISTOLOGICAL_VARIANTS, blank=True, null=True)
     free_vertical_margins =  models.IntegerField(verbose_name="Free vertical margins (>1mm)", choices= _FREE_MARGINS, blank=True, null=True)
     free_horizontal_margins =  models.IntegerField(verbose_name="Free horizontal margin (>1mm)", choices= _FREE_MARGINS, blank=True, null=True)
+
+    platelets = models.IntegerField(verbose_name="Platelets", choices=_PLATELET_INTERVALS, blank=True, null=True)
+    other_coagulopathies = models.IntegerField(verbose_name="Other coagulopathies", choices = _NO_YES, blank=True, null=True)
+    difficult_locations = models.IntegerField(verbose_name="Difficult locations", choices =_DIFFICULT_LOCATIONS, blank=True, null=True)
+    laxative = models.IntegerField(verbose_name="Laxative", choices = _LAXATIVE, blank=True, null=True)
+    laxative_schedule = models.IntegerField(verbose_name="Laxative schedule", choices = _LAXATIVE_SCHEDULE, blank=True, null=True)
+    visible_scar = models.IntegerField(verbose_name="Visible scar", choices=_NO_YES, blank=True, null=True)
+    endoscopic_technique = models.IntegerField(verbose_name = "Endoscopic technique", choices = _TECHNIQUE_OBSERVATIONAL, blank= True, null = True)
+    treatment_of_residual_polyp = models.IntegerField(verbose_name="Treatment of residual polyp", choices=_TREATMENT_RESIDUAL, blank=True, null=True)
+    dye_submucosal_injection = models.IntegerField(verbose_name="Dye submucosal injection", choices=_DYE_SUBMUCOSAL, blank=True, null=True)
+
+    boston_right = models.IntegerField(verbose_name="Boston right colon", choices=_BOSTON_SCALE, blank=True, null=True)
+    boston_transverse = models.IntegerField(verbose_name="Boston transverse colon", choices=_BOSTON_SCALE, blank=True, null=True)
+    boston_left = models.IntegerField(verbose_name="Boston left colon", choices=_BOSTON_SCALE, blank=True, null=True)
+    boston = models.IntegerField(verbose_name="Boston",blank=True,null=True)
+
+    clipping = models.IntegerField(verbose_name="Clipping", choices=_CLIPPING, blank=True, null=True)
+    surgery = models.IntegerField(verbose_name="Surgery", choices=_SURGERY, blank=True, null=True)
+    number_of_sessions = models.IntegerField(verbose_name="Number of endoscopic sessions needed", choices = _SESSIONS_NEEDED, blank=True, null=True)
+
 
     def validate(request):
         user = UserProfile.objects.get(user = request.user)
@@ -785,6 +922,8 @@ class ObservationalCase(TypeCase):
         case.doctor = user
         case.group = group
 
+        import pdb; pdb.set_trace()
+
         ids = TypeCase.get_case_ids(case)
         case.id_for_doctor = ids[0]
         case.id_for_hospital = ids[1]
@@ -795,21 +934,23 @@ class ObservationalCase(TypeCase):
             return None
 
 
+_SESSIONS_NEEDED= zip (range(1,10), range(1,10))
+
 class ObsinternationalCase(TypeCase):
 
     date = models.DateField(verbose_name = "Date", blank= True, null = True)
     age = models.IntegerField(verbose_name = "Age", validators = [MinValueValidator(0)], blank= True, null = True)
 
+    id_number = models.IntegerField(verbose_name="ID Number", blank=True, null=True)
+    case_number = models.IntegerField(verbose_name="Case number", blank=True, null=True)
+    endoscopist = models.CharField(verbose_name="Endoscopist", max_length=128, blank=True, null=True)
+
     age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
     sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, blank= True, null = True)
     asa = models.IntegerField(verbose_name = "ASA", choices = _ASA , blank= True, null = True)
     hypertension = models.IntegerField(verbose_name = "Hypertension", choices = _NO_YES, blank= True, null = True)
-    hb = models.FloatField(verbose_name = "HB (g/dL)", blank= True, null = True)
-    platelets = models.IntegerField(verbose_name = "Platelets (x10⁹/L)", blank= True, null = True)
-    inr = models.FloatField(verbose_name = "INR", blank= True, null = True) #max-min ?
-    pt = models.IntegerField(verbose_name = "PT (s)", blank= True, null = True)   #max-min ?
     aspirin = models.IntegerField(verbose_name = "Aspirin", choices = _ASPIRIN, blank= True, null = True)
-    anticoagulants = models.IntegerField(verbose_name = "Anticoagulants", choices = _ANTICOAGULANT, blank= True, null = True)
+    anticoagulants = models.IntegerField(verbose_name = "Anticoagulants", choices = _ANTICOAGULANT_ENGLISH, blank= True, null = True)
     heparinbridgetherapy = models.IntegerField(verbose_name = "Heparin Bridge Therapy", choices = _NO_YES, blank= True, null = True)
     nombre_p_activo_antiagreg_anticoag = models.CharField(verbose_name = "Active ingredients anticoagulant/antiagregant", max_length=128, blank= True, null = True)
     day_of_reintroduction_antiagregant = models.IntegerField(verbose_name = "Day of reintroduction anticoagulant/antiagregant", blank= True, null = True)
@@ -817,59 +958,43 @@ class ObsinternationalCase(TypeCase):
     lst_yn = models.IntegerField(verbose_name = "LST yn", choices= _NO_YES, blank= True, null = True)
     lst_morphology = models.IntegerField(verbose_name = "LST Morphology", choices = _MORPHOLOGY, blank= True, null = True)
     large_nodule_one_cm = models.IntegerField(verbose_name = "Large nodule 1cm", choices = _NO_YES, blank= True, null = True)
-    demacrated_depressed_area = models.IntegerField(verbose_name = "Demacrated depressed area", choices = _NO_YES, blank= True, null = True)
+    demarcated_depressed_area = models.IntegerField(verbose_name = "Demarcated depressed area", choices = _NO_YES, blank= True, null = True)
     sclerous_wall_change = models.IntegerField(verbose_name = "Sclerous wall change", choices = _NO_YES, blank= True, null = True)
     fold_convergency = models.IntegerField(verbose_name = "Fold convergency", choices = _NO_YES, blank= True, null = True)
     chicken_skin_mucosa_around = models.IntegerField(verbose_name = "Chicken skin mucosa around", choices = _NO_YES, blank= True, null = True)
     maximum_size_mm = models.IntegerField(verbose_name="Maximum size (mm)", blank= True, null = True)
     area_square_cm = models.IntegerField(verbose_name = "Area (cm2)", blank= True, null = True)
-    location = models.IntegerField(verbose_name = "Location", choices = _LOCATION, blank= True, null = True)
-    ileocecal_valve_involvement = models.IntegerField(verbose_name = "Ileocecal valve involvement", choices =_NO_YES, blank= True, null = True)
+    location = models.IntegerField(verbose_name = "Location", choices = _LOCATION_OBSERVATIONAL, blank= True, null = True)
     high_definition = models.IntegerField(verbose_name = "High definition", choices = _HIGH_DEFINITION, blank= True, null = True)
     endoscopemodel = models.CharField(verbose_name = "Endoscope model", max_length = 50, blank= True, null = True)
-    nbi = models.IntegerField(verbose_name = "NBI", choices = _NO_YES, blank= True, null = True)
-    nbi_sano = models.IntegerField(verbose_name = "NBI sano", choices = _NBI_SANO, blank= True, null = True) #nombre en español?
-    nbi_nice = models.IntegerField(verbose_name = "NBI NICE", choices = _NBI_NICE, blank= True, null = True) #NICE son siglas?
-    cromoendoscopy = models.IntegerField(verbose_name = "Cromoendoscopy", choices = _NO_YES, blank= True, null = True)
+    nbi = models.IntegerField(verbose_name = "NBI/FICE", choices = _NO_YES, blank= True, null = True)
+    nbi_sano = models.IntegerField(verbose_name = "SANO", choices = _NBI_SANO, blank= True, null = True) #nombre en español?
+    nbi_nice = models.IntegerField(verbose_name = "NICE", choices = _NBI_NICE, blank= True, null = True) #NICE son siglas?
+    chromoendoscopy = models.IntegerField(verbose_name = "Cromoendoscopy", choices = _NO_YES, blank= True, null = True)
     kudo = models.IntegerField(verbose_name = "Kudo", choices = _KUDO, blank= True, null = True)
     prepathologic_endoscopic_diagnostic_a = models.IntegerField(verbose_name = "Prepathologic endoscopic diagnost 1", choices = _PED_A , blank= True, null = True)
     prepathologic_endoscopic_diagnostic_b = models.IntegerField(verbose_name = "Prepathologic endoscopic diagnost 2", choices = _PED_B , blank= True, null = True)
     correct_dx_adenoma_serrated = models.IntegerField(verbose_name = "Correct Dx Adenoma Serrated", choices = _NO_YES, blank= True, null = True)
     correct_dx_invasion = models.IntegerField(verbose_name = "Correct Dx Invasion", choices = _NO_YES, blank= True, null = True)
-    histology = models.IntegerField(verbose_name = "Histology", choices = _HISTOLOGY, blank= True, null = True)
-    histol_simplified = models.IntegerField(verbose_name = "Histology simplified", choices = _HISTOLOGY_SIMP, blank= True, null = True)
+    histology = models.IntegerField(verbose_name = "Histology", choices = _HISTOLOGY_OBSERVATIONAL, blank= True, null = True)
     time_of_procedure_in_mins = models.IntegerField(verbose_name = "Time of procedure (m)", blank= True, null = True)
-    difficulty_of_emr = models.IntegerField(verbose_name = "Dificutly of EMR", choices = _DIFFICULTY, blank= True, null = True)
+    difficulty_of_emr = models.IntegerField(verbose_name = "Difficutly of EMR", choices = _DIFFICULTY, blank= True, null = True)
     accesibility = models.IntegerField(verbose_name = "Accesibility", choices = _DIFFICULTY, blank= True, null = True)
     resection = models.IntegerField(verbose_name = "Resection", choices = _RESECTION, blank= True, null = True)
     previous_biopsy = models.IntegerField(verbose_name = "Previous biopsy", choices = _NO_YES, blank= True, null = True)
     previous_attempt = models.IntegerField(verbose_name = "Previous attempt", choices = _NO_YES, blank= True, null = True)
     non_lifting_sign = models.IntegerField(verbose_name = "Non lifting sign", choices = _NO_YES, blank= True, null = True)
-    technique = models.IntegerField(verbose_name = "Technique", choices = _TECHNIQUE, blank= True, null = True)
-    technique_two  = models.IntegerField(verbose_name =" Technique 2", choices = _TECHNIQUE_TWO, blank= True, null = True)
-    limit_marks = models.IntegerField(verbose_name = "Limit marks", choices = _MARKS, blank= True, null = True)
-    injection = models.IntegerField(verbose_name = "Injection", choices = _INJECTION, blank= True, null = True)
+    limit_marks = models.IntegerField(verbose_name = "Limit marks", choices = _NO_YES, blank= True, null = True)
+    injection = models.IntegerField(verbose_name = "Injection", choices = _INJECTION_ENG, blank= True, null = True)
     adrenaline = models.IntegerField(verbose_name = "Adrenaline", choices = _NO_YES, blank= True, null = True)
     endocut = models.IntegerField(verbose_name = "Endocut/Blended", choices = _ENDOCUT, blank= True, null = True)
     electrosurgical_generator_model = models.CharField(verbose_name = "Electrosurgical generator model", max_length = 100, blank= True, null = True) #max_length?
-    polyp_retrieval = models.IntegerField(verbose_name = "Polyp retrieval", choices = _POLYP_RETRIEVAL, blank= True, null = True)
     argon_PC = models.IntegerField(verbose_name = "Argon PC", choices = _ARGON_PC, blank= True, null = True)
     coagulation_forceps = models.IntegerField(verbose_name = "Coagulation forceps", choices = _NO_YES, blank= True, null = True)
     snare_tip_soft_coagulation = models.IntegerField(verbose_name = "Snare tip soft coagulation", choices = _NO_YES, blank= True, null = True)
-    cs_cut_watts = models.IntegerField(verbose_name = "Cut (watts)", blank = True, null = True)
-    cs_cut_mode = models.IntegerField(verbose_name = "Endocut mode", choices = _ENDOCUT_MODE, blank= True, null = True )
-    cs_coagulation_watts = models.IntegerField(verbose_name = "Coagulation (watts)", blank = True, null = True)
-    cs_coagulation_mode = models.IntegerField(verbose_name = "Coagulation mode", choices = _COAGULATION, blank= True, null = True )
-    clips_control_group = models.IntegerField(verbose_name = "Clips control group", choices = _CLIPS_CONTROL, blank= True, null = True)
-    clips_tratment_group = models.IntegerField(verbose_name = "Clips treatment group", choices = _CLIPS_TREAT_GROUP, blank= True, null = True)
-    clips_n_lote = models.IntegerField(verbose_name = "Lot number", blank= True, null = True)
-    clips_exp_date = models.DateField(verbose_name = "Expiration date", blank= True, null = True)
-    not_tired_closure_by = models.IntegerField(verbose_name = "Closure not tried because of", choices = _NOT_TRIED, blank= True, null = True)
     closure_technique = models.IntegerField(verbose_name = "Closure technique", choices = _CLOSURE_TECHNIQUE, blank= True, null = True)
     number_clips_needed = models.IntegerField(verbose_name = "Number of clips needed", blank= True, null = True)
     perforation = models.IntegerField(verbose_name = "Perforation", choices = _PERFORATIOM, blank= True, null = True)
-    surgery_from_endoscopy = models.IntegerField(verbose_name = "Surgery from endoscopy", choices = _NO_YES, blank= True, null = True) #Cadena?
-    surgery_by_complication = models.IntegerField(verbose_name = "Surgery by complication", choices = _SURGERY_BY_COMPLICATION, blank= True, null = True)
     bleeding = models.IntegerField(verbose_name = "Bleeding", choices = _BLEEDING, blank= True, null = True)
     immediate_bleeding = models.IntegerField(verbose_name = "Immediate bleeding", choices = _IMMEDIATE_BLEEDING, blank= True, null = True)
     delayed_bleeding = models.IntegerField(verbose_name = "Delayed bleeding", choices = _NO_YES, blank= True, null = True)
@@ -878,10 +1003,10 @@ class ObsinternationalCase(TypeCase):
     pps = models.IntegerField(verbose_name = "Post polypectomy syndrome", choices = _NO_YES, blank= True, null = True) #PPS o Síndrome postpolipectomía?
     fever = models.IntegerField(verbose_name = "Fever", choices = _FEVER, blank= True, null = True)
     pain_requiring_medical_intervention = models.IntegerField(verbose_name = "Pain requiring medical intervantion", choices = _NO_YES, blank= True, null = True)
-    hospital_stay_by_technique = models.IntegerField(verbose_name = "Hospital stay by technique", blank= True, null = True)
-    hospital_stay_by_complication = models.IntegerField(verbose_name = "Hospital stay by complication", blank= True, null = True)
+    hospital_stay_by_technique = models.IntegerField(verbose_name = "Hospital stay by technique (days)", blank= True, null = True)
+    hospital_stay_by_complication = models.IntegerField(verbose_name = "Hospital stay by complication (days)", blank= True, null = True)
     follow_up_months = models.IntegerField(verbose_name = "Follow up months", blank= True, null = True)
-    successful_treatment = models.IntegerField(verbose_name=" Successful treatment", choices = _SUCCESSFUL_TREATMENT, blank= True, null = True)
+    successful_treatment = models.IntegerField(verbose_name=" Successful treatment", choices = _SUCCESSFUL_TREATMENT_OBSERVATIONAL, blank= True, null = True)
     sedation = models.IntegerField(verbose_name = "Sedation", choices = _SEDATION, blank= True, null = True)
     last_date_endoscopic_follow_up = models.DateField(verbose_name="Last date endoscopic follow up", blank= True, null = True)
     recurrence_three_six_months_control = models.IntegerField(verbose_name = "Recurrence 3-6 months control", choices = _RECURRENCE_THREE_SIX, blank= True, null = True)
@@ -903,6 +1028,26 @@ class ObsinternationalCase(TypeCase):
     histological_variants = models.IntegerField(verbose_name="Histological variants", choices= _HISTOLOGICAL_VARIANTS, blank=True, null=True)
     free_vertical_margins =  models.IntegerField(verbose_name="Free vertical margins (>1mm)", choices= _FREE_MARGINS, blank=True, null=True)
     free_horizontal_margins =  models.IntegerField(verbose_name="Free horizontal margin (>1mm)", choices= _FREE_MARGINS, blank=True, null=True)
+
+    platelets = models.IntegerField(verbose_name="Platelets", choices=_PLATELET_INTERVALS, blank=True, null=True)
+    other_coagulopathies = models.IntegerField(verbose_name="Other coagulopathies", choices = _NO_YES, blank=True, null=True)
+    difficult_locations = models.IntegerField(verbose_name="Difficult locations", choices =_DIFFICULT_LOCATIONS, blank=True, null=True)
+    laxative = models.IntegerField(verbose_name="Laxative", choices = _LAXATIVE, blank=True, null=True)
+    laxative_schedule = models.IntegerField(verbose_name="Laxative schedule", choices = _LAXATIVE_SCHEDULE, blank=True, null=True)
+    visible_scar = models.IntegerField(verbose_name="Visible scar", choices=_NO_YES, blank=True, null=True)
+    endoscopic_technique = models.IntegerField(verbose_name = "Endoscopic technique", choices = _TECHNIQUE_OBSERVATIONAL, blank= True, null = True)
+    treatment_of_residual_polyp = models.IntegerField(verbose_name="Treatment of residual polyp", choices=_TREATMENT_RESIDUAL, blank=True, null=True)
+    dye_submucosal_injection = models.IntegerField(verbose_name="Dye submucosal injection", choices=_DYE_SUBMUCOSAL, blank=True, null=True)
+
+    boston_right = models.IntegerField(verbose_name="Boston right colon", choices=_BOSTON_SCALE, blank=True, null=True)
+    boston_transverse = models.IntegerField(verbose_name="Boston transverse colon", choices=_BOSTON_SCALE, blank=True, null=True)
+    boston_left = models.IntegerField(verbose_name="Boston left colon", choices=_BOSTON_SCALE, blank=True, null=True)
+    boston = models.IntegerField(verbose_name="Boston",blank=True,null=True)
+
+    clipping = models.IntegerField(verbose_name="Clipping", choices=_CLIPPING, blank=True, null=True)
+    surgery = models.IntegerField(verbose_name="Surgery", choices=_SURGERY, blank=True, null=True)
+    number_of_sessions = models.IntegerField(verbose_name="Number of endoscopic sessions needed", choices = _SESSIONS_NEEDED, blank=True, null=True)
+
 
     def validate(request):
         user = UserProfile.objects.get(user = request.user)
@@ -926,6 +1071,8 @@ class ObsinternationalCase(TypeCase):
             return case.pk
         except:
             return None
+
+
 
 #Example of a simple case type
 class CancerCase(TypeCase):
