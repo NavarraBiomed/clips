@@ -921,8 +921,6 @@ class ObservationalCase(TypeCase):
         case.doctor = user
         case.group = group
 
-        import pdb; pdb.set_trace()
-
         ids = TypeCase.get_case_ids(case)
         case.id_for_doctor = ids[0]
         case.id_for_hospital = ids[1]
