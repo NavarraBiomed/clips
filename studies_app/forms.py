@@ -70,7 +70,7 @@ class ObservationalForm(CaseForm):
                     Row('aspirin', 'anticoagulants'),
                     Row('platelets','other_coagulopathies'),
                     Row('heparinbridgetherapy', 'nombre_p_activo_antiagreg_anticoag'),
-                    Row('day_of_reintroduction_antiagregant',),
+                    Row('day_of_reintroduction_antiaggregant',),
                     Row('colonoscopy_indication'),
             ),
             Fieldset('Polyp characteristics',
@@ -94,17 +94,18 @@ class ObservationalForm(CaseForm):
                 Row('sedation',),
                 Row('time_of_procedure_in_mins',),
                 Row('difficulty_of_emr',),
-                Row('accesibility', 'resection'),
+                Row('accesibility'),
                 Row('previous_biopsy', 'previous_attempt'),
                 Row('non_lifting_sign',),
                 Row('visible_scar'),
-                Row('endoscopic_technique','treatment_of_residual_polyp'),
-                Row('limit_marks',),
+                Row('endoscopic_technique','resection'),
+                Row('treatment_of_residual_polyp', 'limit_marks',),
                 Row('injection', 'dye_submucosal_injection'),
                 Row('adrenaline'),
                 Row('laxative','laxative_schedule'),
-                Row('boston_left', 'boston_transverse', 'boston_right'),
-                Row('boston')
+                Row('boston_right', 'boston_transverse', 'boston_left'),
+                Row('boston'),
+                Row('caps_accessories')
 
             ),
             Fieldset('Morphology and Histology',
@@ -128,8 +129,8 @@ class ObservationalForm(CaseForm):
                 Row('number_clips_needed',),
             ),
             Fieldset('Surgery/Complications',
-                Row('perforation',),
                 Row('surgery'),
+                Row('perforation',),
                 Row('bleeding', 'immediate_bleeding'),
                 Row('delayed_bleeding', 'bleeding_treatment'),
                 Row('transfusion',),
@@ -152,12 +153,17 @@ class ObservationalForm(CaseForm):
     )
 
 class ObsinternationalForm(ObservationalForm):
+    class Meta:
+        model = ObsinternationalCase
+        exclude = ('id_for_doctor', 'id_for_hospital')
+
     def __init__(self, *args, **kwargs):
         super(ObservationalForm, self).__init__(*args, **kwargs)
-
+        """
         mandatory_fields = ["sex"]
         for key in mandatory_fields:
             self.fields[key].required = True
+        """
 
 class ClipsForm(CaseForm):
 	#, LayoutMixin, View
@@ -180,7 +186,7 @@ class ClipsForm(CaseForm):
 							Row('pt',),
 							Row('aspirin', 'anticoagulants'),
 							Row('heparinbridgetherapy', 'nombre_p_activo_antiagreg_anticoag'),
-							Row('day_of_reintroduction_antiagregant',),
+							Row('day_of_reintroduction_antiaggregant',),
                     ),
                     Fieldset('Polyp characteristics',
                     	Row('paris_calif',),

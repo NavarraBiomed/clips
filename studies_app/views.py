@@ -116,7 +116,6 @@ def case_edit(request, study_pk, case_pk):
             #raise Exception("Form isn't valid. Form type: {}".format( type(form) ))
     else:
         form = get_form_from_case(case, hidden_fields=['clips_tratment_group'])
-        #import pdb; pdb.set_trace()
         return render(request, form.template, {
             'user_prof':user,
             'hospital':hospital,
