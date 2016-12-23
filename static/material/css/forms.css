@@ -1,9 +1,6 @@
 form  .row {
     margin-bottom: 0px;
 }
-[class^="mdi-"], [class*="mdi-"] {
-    line-height: 45px;
-}
 
 input[type=number] {
     -moz-appearance: textfield;
@@ -38,6 +35,10 @@ input[type=number] {
   text-overflow: ellipsis;
   width: calc(100% - 21px);
   overflow: hidden;
+}
+
+.input-field .prefix {
+    line-height: 45px;
 }
 
 .input-field .prefix ~ label {
@@ -144,22 +145,12 @@ select.material-ignore {
     position: absolute;
     width: 3rem;
     font-size: 2rem;
-    margin-top: 14px;
+    margin-top: 25px;
     transition: color .2s;
 }
 
 .select-field .prefix ~ label {
     margin-left: 3rem;
-}
-
-.select-field .prefix ~ .select-wrapper input {
-    margin-left: 3rem;
-    width: 92%;
-    width: calc(100% - 3rem);
-}
-
-.radio-field {
-    paddign-bottom: 18px;
 }
 
 .radio-field label.item-label {
