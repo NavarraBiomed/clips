@@ -25,6 +25,13 @@
 	{% endfor %}
 	</div>
 	</div>
+    {% if study.tutorial %}
+    <div class="fixed-action-btn" style="bottom: 8em; right: 5em;">
+	    <a class="btn-floating btn-large blue"  href = "{% url 'studies_app.views.tutorial' study_id=study.pk %}">
+	      <i class="material-icons">description</i>
+	    </a>
+	</div>
+    {% endif %}
 	<div class="fixed-action-btn" style="bottom: 3em; right: 5em;">
 	    <a class="btn-floating btn-large red"  href = "{% url 'studies_app.views.new_case' study_id=study.pk %}">
 	      <i class="material-icons">add</i>

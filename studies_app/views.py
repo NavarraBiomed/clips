@@ -4,11 +4,13 @@ from django.views.generic.base import RedirectView
 from django.contrib.auth.decorators import login_required
 from django import template
 from django.template.loader import get_template, TemplateDoesNotExist
+from django.conf import settings
 
 from .models import *
 from .forms import *
 import sys
 import random, json
+import os
 
 # Create your views here.
 
@@ -79,6 +81,20 @@ def study_details(request, study_id):
 			})
 	else:
 		return HttpResponseForbidden()
+
+
+@login_required
+def tutorial(request, study_id):
+    study = Study.objects.get(pk = study_id)
+    full_path = study.tutorial.url
+    rel_path = full_path.split('/')[:-1]
+    name = full_path.split('/')[-1]
+    #path = os.path.join(settings.MEDIA_ROOT, rel_path, name)
+    pdf = open(study.tutorial.url, 'rb')
+    response = HttpResponse(pdf.read(), content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + name
+    return response
+
 
 def case_edit(request, study_pk, case_pk):
 	#Redirect to admin site if needed

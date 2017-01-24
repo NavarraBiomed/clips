@@ -381,6 +381,7 @@ class Hospital(models.Model):
 class Study(models.Model):
     name = models.CharField(max_length=64)
     study_type = models.CharField(verbose_name="Study type", choices = _STUDY_TYPES, max_length=64)
+    tutorial = models.FileField(verbose_name="Tutorial file", upload_to="tutorials", blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Studies"

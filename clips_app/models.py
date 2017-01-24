@@ -336,6 +336,7 @@ class Hospital(models.Model):
 class Study(models.Model):
 	name = models.CharField(verbose_name = "Name", max_length = 200)
 	description = models.CharField(verbose_name = "Description", max_length = 500)
+    tutorial = models.FileField(verbose_name="Tutorial file", blank=True, null=True)
 
 	def __str__(self):
 		return self.name
