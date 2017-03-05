@@ -798,7 +798,7 @@ _SESSIONS_NEEDED= zip (range(1,10), range(1,10))
 _CAPS_ACCESSORIES = (
     (0, 'No'),
     (1, 'Simple Cap'),
-    (2, 'Endocuffs'),
+    (2, 'Endocuff Vision'),
     (3, 'Endorings'),
     (4, 'G-eye'),
     (5, 'Thrid-eye'),
@@ -811,7 +811,7 @@ class ObservationalCase(TypeCase):
 
     id_number = models.IntegerField(verbose_name="ID Number*", blank=True, null=True)
     case_number = models.IntegerField(verbose_name="Case number*", blank=True, null=True)
-    endoscopist = models.CharField(verbose_name="Endoscopist*", max_length=128, blank=True, null=True)
+    endoscopist = models.CharField(verbose_name="Investigator/Endoscopist*", max_length=128, blank=True, null=True)
 
     age_interval = models.IntegerField(verbose_name = "Age interval*", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
     sex = models.IntegerField(verbose_name = "Sex*", choices = _SEX, blank= True, null = True)
@@ -863,7 +863,7 @@ class ObservationalCase(TypeCase):
     closure_technique = models.IntegerField(verbose_name = "Closure technique*", choices = _CLOSURE_TECHNIQUE, blank= True, null = True)
     number_clips_needed = models.IntegerField(verbose_name = "Number of clips needed*", blank= True, null = True)
     perforation = models.IntegerField(verbose_name = "Perforation*", choices = _PERFORATIOM, blank= True, null = True)
-    bleeding = models.IntegerField(verbose_name = "Bleeding*", choices = _BLEEDING, blank= True, null = True)
+    bleeding = models.IntegerField(verbose_name = "Bleeding timing*", choices = _BLEEDING, blank= True, null = True)
     immediate_bleeding = models.IntegerField(verbose_name = "Immediate bleeding*", choices = _IMMEDIATE_BLEEDING, blank= True, null = True)
     delayed_bleeding = models.IntegerField(verbose_name = "Delayed bleeding*", choices = _NO_YES, blank= True, null = True)
     bleeding_treatment = models.IntegerField(verbose_name = "Bleeding treatment*", choices = _BLEEDING_TREATMENT, blank= True, null = True)
@@ -951,7 +951,7 @@ class ObsinternationalCase(TypeCase):
 
     id_number = models.IntegerField(verbose_name="ID*", blank=True, null=True)
     case_number = models.IntegerField(verbose_name="Case number*", blank=True, null=True)
-    endoscopist = models.CharField(verbose_name="Endoscopist*", max_length=128, blank=True, null=True)
+    endoscopist = models.CharField(verbose_name="Investigator/Endoscopist*", max_length=128, blank=True, null=True)
 
     age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
     sex = models.IntegerField(verbose_name = "Sex*", choices = _SEX, blank= True, null = True)
@@ -1003,7 +1003,7 @@ class ObsinternationalCase(TypeCase):
     closure_technique = models.IntegerField(verbose_name = "Closure technique", choices = _CLOSURE_TECHNIQUE, blank= True, null = True)
     number_clips_needed = models.IntegerField(verbose_name = "Number of clips needed", blank= True, null = True)
     perforation = models.IntegerField(verbose_name = "Perforation", choices = _PERFORATIOM, blank= True, null = True)
-    bleeding = models.IntegerField(verbose_name = "Bleeding", choices = _BLEEDING, blank= True, null = True)
+    bleeding = models.IntegerField(verbose_name = "Bleeding timing", choices = _BLEEDING, blank= True, null = True)
     immediate_bleeding = models.IntegerField(verbose_name = "Immediate bleeding", choices = _IMMEDIATE_BLEEDING, blank= True, null = True)
     delayed_bleeding = models.IntegerField(verbose_name = "Delayed bleeding", choices = _NO_YES, blank= True, null = True)
     bleeding_treatment = models.IntegerField(verbose_name = "Bleeding treatment", choices = _BLEEDING_TREATMENT, blank= True, null = True)
