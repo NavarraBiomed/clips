@@ -10,9 +10,11 @@
 			<div class="card-title">Cases by doctor</div>
 			<div id="user-bar-chart"></div>
 		</div>
+		{% if study_type != "obsinternational" %}
 		<div class="card card-expand box-shadow">
 			<div class="card-title">Cases by hospital</div>
 			<div id="hospital-bar-chart"></div>
 		</div>
+		{% endif %}
 
 {% endblock content %}

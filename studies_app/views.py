@@ -200,6 +200,7 @@ def study_info(request, study_id):
 	return render(request, 'studies_app/study_info.html', {
 		'user_prof':user,
 		'study_id':study.pk,
+		'study_type': study.study_type,
 		'breadcrumbs':breadcrumbs
 		})
 
