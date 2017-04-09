@@ -944,6 +944,15 @@ class ObservationalCase(TypeCase):
 
 _SESSIONS_NEEDED= zip (range(1,10), range(1,10))
 
+_ETHNICITY = (
+    (0, 'Caucasian'),
+    (1, 'Latin American'),
+    (2, 'African/Afro-American'),
+    (3, 'Arabian'),
+    (4, 'Asian (India, Parkistan...)'),
+    (5, 'Asian (Japan, China, Korea...)'),
+)
+
 class ObsinternationalCase(TypeCase):
 
     date = models.DateField(verbose_name = "Date*", blank= True, null = True)
@@ -954,6 +963,7 @@ class ObsinternationalCase(TypeCase):
     endoscopist = models.CharField(verbose_name="Investigator/Endoscopist*", max_length=128, blank=True, null=True)
 
     age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
+    ethnicity = models.IntegerField(verbose_name = "Ethnicity*", choices = _ETHNICITY, blank=True, null=True)
     sex = models.IntegerField(verbose_name = "Sex*", choices = _SEX, blank= True, null = True)
     asa = models.IntegerField(verbose_name = "ASA", choices = _ASA , blank= True, null = True)
     hypertension = models.IntegerField(verbose_name = "Hypertension", choices = _NO_YES, blank= True, null = True)

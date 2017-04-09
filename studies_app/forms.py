@@ -152,18 +152,107 @@ class ObservationalForm(CaseForm):
             )
     )
 
-class ObsinternationalForm(ObservationalForm):
+class ObsinternationalForm(CaseForm):
+
     class Meta:
         model = ObsinternationalCase
         exclude = ('id_for_doctor', 'id_for_hospital')
 
-    def __init__(self, *args, **kwargs):
-        super(ObservationalForm, self).__init__(*args, **kwargs)
-        """
-        mandatory_fields = ["sex"]
-        for key in mandatory_fields:
-            self.fields[key].required = True
-        """
+    template = 'studies_app/edit/observational.html'
+    layout = Layout(
+            Row('study'),
+            Row('doctor'),
+            Row('endoscopist', 'country' ),
+            Row('id_number','case_number'),
+            Fieldset('Patient info',
+                    Row('sex', 'date'),
+                    Row('age', 'age_interval', 'ethnicity'),
+                    Row('asa', 'hypertension'),
+                    Row('aspirin', 'anticoagulants'),
+                    Row('platelets','other_coagulopathies'),
+                    Row('heparinbridgetherapy', 'nombre_p_activo_antiagreg_anticoag'),
+                    Row('day_of_reintroduction_antiaggregant',),
+                    Row('colonoscopy_indication'),
+            ),
+            Fieldset('Polyp characteristics',
+                Row('paris_calif',),
+                Row('lst_yn','lst_morphology'),
+                Row('large_nodule_one_cm',),
+                Row('demarcated_depressed_area',),
+                Row('sclerous_wall_change',),
+                Row('fold_convergency',),
+                Row('chicken_skin_mucosa_around',),
+                Row('maximum_size_mm', 'area_square_cm'),
+                Row('location',),
+                Row('difficult_locations',),
+            ),
+            Fieldset('Technical considerations',
+                Row('high_definition',),
+                Row('endoscopemodel',),
+                Row('nbi', 'nbi_sano', 'nbi_nice'),
+                Row('chromoendoscopy',),
+                Row('kudo',),
+                Row('sedation',),
+                Row('time_of_procedure_in_mins',),
+                Row('difficulty_of_emr',),
+                Row('accesibility'),
+                Row('previous_biopsy', 'previous_attempt'),
+                Row('non_lifting_sign',),
+                Row('visible_scar'),
+                Row('endoscopic_technique','resection'),
+                Row('treatment_of_residual_polyp', 'limit_marks',),
+                Row('injection', 'dye_submucosal_injection'),
+                Row('adrenaline'),
+                Row('laxative','laxative_schedule'),
+                Row('boston_right', 'boston_transverse', 'boston_left'),
+                Row('boston'),
+                Row('caps_accessories')
+
+            ),
+            Fieldset('Morphology and Histology',
+                Row('prepathologic_endoscopic_diagnostic_a','prepathologic_endoscopic_diagnostic_b'),
+                Row('correct_dx_adenoma_serrated','correct_dx_invasion'),
+                Row('histology'),
+                Row('depth', 'depth_sm_invasion'),
+                Row('lymphatic_invasion', 'vascular_invasion', 'perineural_invasion'),
+                Row('budding', 'degree_differentiation'),
+                Row('histological_variants',),
+                Row('free_vertical_margins','free_horizontal_margins'),
+            ),
+            Fieldset('Cautering settings',
+                Row('endocut','electrosurgical_generator_model'),
+
+            ),
+            Fieldset('Profilactic measures',
+                Row('argon_PC'),
+                Row('snare_tip_soft_coagulation', 'coagulation_forceps'),
+                Row('clipping', 'closure_technique'),
+                Row('number_clips_needed',),
+            ),
+            Fieldset('Surgery/Complications',
+                Row('surgery'),
+                Row('perforation',),
+                Row('bleeding', 'immediate_bleeding'),
+                Row('delayed_bleeding', 'bleeding_treatment'),
+                Row('transfusion',),
+                Row('pps',),
+                Row('fever',),
+                Row('pain_requiring_medical_intervention',),
+                Row('hospital_stay_by_technique', 'hospital_stay_by_complication'),
+            ),
+            Fieldset('Follow up',
+                Row('follow_up_months',),
+                Row('successful_treatment',),
+                Row('last_date_endoscopic_follow_up',),
+                Row('recurrence_three_six_months_control', 'recurrenec_one_year_control', 'global_recurrence'),
+                Row('number_of_sessions'),
+            ),
+            Fieldset('Aditional info',
+                Row('other_complications_comments',),
+                Row('other_comments',),
+            )
+    )
+
 
 class ClipsForm(CaseForm):
 	#, LayoutMixin, View
