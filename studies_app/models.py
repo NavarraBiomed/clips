@@ -962,7 +962,7 @@ class ObsinternationalCase(TypeCase):
     case_number = models.IntegerField(verbose_name="Case number*", blank=True, null=True)
     endoscopist = models.CharField(verbose_name="Investigator/Endoscopist*", max_length=128, blank=True, null=True)
 
-    age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
+    age_interval = models.IntegerField(verbose_name = "Age interval*", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
     ethnicity = models.IntegerField(verbose_name = "Ethnicity*", choices = _ETHNICITY, blank=True, null=True)
     sex = models.IntegerField(verbose_name = "Sex*", choices = _SEX, blank= True, null = True)
     asa = models.IntegerField(verbose_name = "ASA", choices = _ASA , blank= True, null = True)
