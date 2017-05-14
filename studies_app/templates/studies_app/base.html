@@ -25,7 +25,7 @@
         <div class="page-header green">
             <div class="page-header-up green">
                 <a href="/">Clips</a>
-                <div id="logout" class="right">{% if user_prof.user.is_authenticated %}{{user}} (<a href="/logout/">Log out</a>){% endif %}</div>
+                <div id="logout" class="right">{% if request.user.is_authenticated %}{{user}} (<a href="/logout/">Log out</a>){% endif %}</div>
             </div>
             <div class="nav-bar green-dark">
                 {% for crumb in breadcrumbs %}
