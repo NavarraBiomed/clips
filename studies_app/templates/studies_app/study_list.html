@@ -6,9 +6,9 @@
 
 {% block content %}
 		<div class="card card-expand box-shadow">
-		<div class="card-title">Study list for {{user_prof}}</div>
+		<div class="card-title">Study list for {{request.user}}</div>
 		<div id="studies-table" class="card-table green-text">
-		{% for study in user_prof.studies.all %}
+		{% for study in studies %}
 				<div class="study card-cell">
 					<div class = "card-cell-title study-name" >
 						 <span>
@@ -30,7 +30,13 @@
 							<i class="material-icons">info</i>
 							</a>
 						</div>
-
+						{% if request.user.is_superuser %}
+						<div class = "card-cell-title study-addCase" >
+							<a  href = "{% url 'studies_app.views.study_export' study_id=study.pk %}">
+							<i class="material-icons">get_app</i>
+							</a>
+						</div>
+						{% endif %}
 					</div>
 
 

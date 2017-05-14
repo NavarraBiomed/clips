@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse
 from django.views.generic.base import RedirectView
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django import template
 from django.template.loader import get_template, TemplateDoesNotExist
 from django.conf import settings
@@ -11,7 +12,9 @@ from .forms import *
 import sys
 import random, json
 import os
-
+import io
+import csv
+from savReaderWriter import SavWriter
 # Create your views here.
 
 def generate_breadcrumbs(**kwargs):
@@ -47,14 +50,14 @@ def test(request):
 
 @login_required
 def study_list(request):
-	#Redirect to admin site if needed
 	if request.user.is_superuser:
-		return HttpResponseRedirect("/admin")
-
-	user = UserProfile.objects.get(user = request.user)
+		studies = Study.objects.all()
+	else:
+		user = UserProfile.objects.get(user = request.user)
+		studies = user.studies.all()
 	breadcrumbs = generate_breadcrumbs()
 	return render(request, 'studies_app/study_list.html', {
-		'user_prof':user,
+		'studies': studies,
 		'breadcrumbs':breadcrumbs
 		})
 
@@ -216,3 +219,34 @@ def study_json(request, study_id):
         data.append(new_case)
 
     return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+@staff_member_required
+def study_export(request, study_id):
+    cases = Study.objects.get(pk=study_id).get_cases().all()
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    # Get header
+    first_case = cases[0]
+    header = []
+    for field in first_case._meta.get_fields():
+        header.append(field.name)
+
+    writer.writerow(header)
+
+    for case in cases:
+        fields = case._meta.get_fields()
+        row_data = []
+        for field in fields:
+            value = getattr(case, field.name, None)
+            if value is None:
+                value = ''
+            row_data.append(value)
+        writer.writerow(row_data)
+
+
+    resp = HttpResponse(output.getvalue(), content_type = "application/csv")
+    resp['Content-Disposition'] = 'attachment; filename=study.csv'
+
+    return resp

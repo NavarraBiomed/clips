@@ -12,6 +12,7 @@ urlpatterns = [
     url (r'^study/(?P<study_id>[0-9]+)/json/$', views.study_json),
     url (r'^study/(?P<study_id>[0-9]+)/info/$', views.study_info),
     url (r'^study/(?P<study_id>[0-9]+)/tutorial/$', views.tutorial),
+    url (r'^study/(?P<study_id>[0-9]+)/export/$', views.study_export),
     url (r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
 
 ]
