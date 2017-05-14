@@ -221,7 +221,8 @@ def study_json(request, study_id):
 
 @staff_member_required
 def study_export(request, study_id):
-    cases = Study.objects.get(pk=study_id).get_cases().all()
+    study = Study.objects.get(pk=study_id)
+    cases = study.get_cases().all()
     output = io.StringIO()
     writer = csv.writer(output)
 
@@ -245,6 +246,6 @@ def study_export(request, study_id):
 
 
     resp = HttpResponse(output.getvalue(), content_type = "application/csv")
-    resp['Content-Disposition'] = 'attachment; filename=study.csv'
+    resp['Content-Disposition'] = 'attachment; filename={}.csv'.format(study.name)
 
     return resp
