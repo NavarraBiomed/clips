@@ -837,6 +837,7 @@ class ObservationalCase(TypeCase):
     endoscopemodel = models.CharField(verbose_name = "Endoscope model", max_length = 50, blank= True, null = True)
     nbi = models.IntegerField(verbose_name = "NBI/FICE/electronic chromoendoscopy*", choices = _NO_YES, blank= True, null = True)
     nbi_sano = models.IntegerField(verbose_name = "SANO", choices = _NBI_SANO, blank= True, null = True) #nombre en español?
+    jnet = models.IntegerField(verbose_name = "JNET", choices = _NBI_SANO, blank= True, null = True)
     nbi_nice = models.IntegerField(verbose_name = "NICE*", choices = _NBI_NICE, blank= True, null = True) #NICE son siglas?
     chromoendoscopy = models.IntegerField(verbose_name = "Chromoendoscopy*", choices = _NO_YES, blank= True, null = True)
     kudo = models.IntegerField(verbose_name = "Kudo", choices = _KUDO, blank= True, null = True)
@@ -987,6 +988,7 @@ class ObsinternationalCase(TypeCase):
     endoscopemodel = models.CharField(verbose_name = "Endoscope model*", max_length = 50, blank= True, null = True)
     nbi = models.IntegerField(verbose_name = "NBI/FICE*", choices = _NO_YES, blank= True, null = True)
     nbi_sano = models.IntegerField(verbose_name = "SANO*", choices = _NBI_SANO, blank= True, null = True) #nombre en español?
+    jnet = models.IntegerField(verbose_name = "JNET", choices = _NBI_SANO, blank= True, null = True)
     nbi_nice = models.IntegerField(verbose_name = "NICE*", choices = _NBI_NICE, blank= True, null = True) #NICE son siglas?
     chromoendoscopy = models.IntegerField(verbose_name = "Chromoendoscopy*", choices = _NO_YES, blank= True, null = True)
     kudo = models.IntegerField(verbose_name = "Kudo*", choices = _KUDO, blank= True, null = True)
