@@ -463,7 +463,7 @@ class ClipsCase(TypeCase):
 
     date = models.DateField(verbose_name = "Date", blank= True, null = True)
     age = models.IntegerField(verbose_name = "Age", validators = [MinValueValidator(0)], blank= True, null = True)
-    age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
+    age_interval = models.IntegerField(verbose_name = "Age interval", choices = _TRAMOS_EDAD, blank= True, null = True)
     sex = models.IntegerField(verbose_name = "Sex", choices = _SEX, blank= True, null = True)
     asa = models.IntegerField(verbose_name = "ASA", choices = _ASA , blank= True, null = True)
     hypertension = models.IntegerField(verbose_name = "Hypertension", choices = _NO_YES, blank= True, null = True)
@@ -491,7 +491,7 @@ class ClipsCase(TypeCase):
     high_definition = models.IntegerField(verbose_name = "High definition", choices = _HIGH_DEFINITION, blank= True, null = True)
     endoscopemodel = models.CharField(verbose_name = "Endoscope model", max_length = 50, blank= True, null = True)
     nbi = models.IntegerField(verbose_name = "NBI", choices = _NO_YES, blank= True, null = True)
-    nbi_sano = models.IntegerField(verbose_name = "NBI sano", choices = _NBI_SANO, blank= True, null = True) #nombre en español?
+    nbi_sano = models.IntegerField(verbose_name = "NBI sano", choices = _NBI_SANO, blank= True, null = True)
     nbi_nice = models.IntegerField(verbose_name = "NBI NICE", choices = _NBI_NICE, blank= True, null = True) #NICE son siglas?
     cromoendoscopy = models.IntegerField(verbose_name = "Cromoendoscopy", choices = _NO_YES, blank= True, null = True)
     kudo = models.IntegerField(verbose_name = "Kudo", choices = _KUDO, blank= True, null = True)
@@ -813,7 +813,7 @@ class ObservationalCase(TypeCase):
     case_number = models.IntegerField(verbose_name="Case number*", blank=True, null=True)
     endoscopist = models.CharField(verbose_name="Investigator/Endoscopist*", max_length=128, blank=True, null=True)
 
-    age_interval = models.IntegerField(verbose_name = "Age interval*", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
+    age_interval = models.IntegerField(verbose_name = "Age interval*", choices = _TRAMOS_EDAD, blank= True, null = True)
     sex = models.IntegerField(verbose_name = "Sex*", choices = _SEX, blank= True, null = True)
     asa = models.IntegerField(verbose_name = "ASA*", choices = _ASA , blank= True, null = True)
     hypertension = models.IntegerField(verbose_name = "Hypertension*", choices = _NO_YES, blank= True, null = True)
@@ -836,7 +836,7 @@ class ObservationalCase(TypeCase):
     high_definition = models.IntegerField(verbose_name = "High definition*", choices = _HIGH_DEFINITION, blank= True, null = True)
     endoscopemodel = models.CharField(verbose_name = "Endoscope model", max_length = 50, blank= True, null = True)
     nbi = models.IntegerField(verbose_name = "NBI/FICE/electronic chromoendoscopy*", choices = _NO_YES, blank= True, null = True)
-    nbi_sano = models.IntegerField(verbose_name = "SANO", choices = _NBI_SANO, blank= True, null = True) #nombre en español?
+    nbi_sano = models.IntegerField(verbose_name = "SANO", choices = _NBI_SANO, blank= True, null = True)
     jnet = models.IntegerField(verbose_name = "JNET", choices = _NBI_SANO, blank= True, null = True)
     nbi_nice = models.IntegerField(verbose_name = "NICE*", choices = _NBI_NICE, blank= True, null = True) #NICE son siglas?
     chromoendoscopy = models.IntegerField(verbose_name = "Chromoendoscopy*", choices = _NO_YES, blank= True, null = True)
@@ -963,7 +963,7 @@ class ObsinternationalCase(TypeCase):
     case_number = models.IntegerField(verbose_name="Case number*", blank=True, null=True)
     endoscopist = models.CharField(verbose_name="Investigator/Endoscopist*", max_length=128, blank=True, null=True)
 
-    age_interval = models.IntegerField(verbose_name = "Age interval*", choices = _TRAMOS_EDAD, blank= True, null = True) #nombre en español?
+    age_interval = models.IntegerField(verbose_name = "Age interval*", choices = _TRAMOS_EDAD, blank= True, null = True)
     ethnicity = models.IntegerField(verbose_name = "Ethnicity*", choices = _ETHNICITY, blank=True, null=True)
     sex = models.IntegerField(verbose_name = "Sex*", choices = _SEX, blank= True, null = True)
     asa = models.IntegerField(verbose_name = "ASA", choices = _ASA , blank= True, null = True)
@@ -987,7 +987,7 @@ class ObsinternationalCase(TypeCase):
     high_definition = models.IntegerField(verbose_name = "High definition*", choices = _HIGH_DEFINITION, blank= True, null = True)
     endoscopemodel = models.CharField(verbose_name = "Endoscope model*", max_length = 50, blank= True, null = True)
     nbi = models.IntegerField(verbose_name = "NBI/FICE*", choices = _NO_YES, blank= True, null = True)
-    nbi_sano = models.IntegerField(verbose_name = "SANO*", choices = _NBI_SANO, blank= True, null = True) #nombre en español?
+    nbi_sano = models.IntegerField(verbose_name = "SANO*", choices = _NBI_SANO, blank= True, null = True)
     jnet = models.IntegerField(verbose_name = "JNET", choices = _NBI_SANO, blank= True, null = True)
     nbi_nice = models.IntegerField(verbose_name = "NICE*", choices = _NBI_NICE, blank= True, null = True) #NICE son siglas?
     chromoendoscopy = models.IntegerField(verbose_name = "Chromoendoscopy*", choices = _NO_YES, blank= True, null = True)
