@@ -137,6 +137,13 @@ _NBI_SANO = (
 	(4, "IIIB")
 	)
 
+_JNET = (
+	(1, "I"),
+	(2, "IIA"),
+	(3, "IIB"),
+	(4, "III")
+	)
+
 _NBI_NICE = (
 	(1, "Type 1"),
 	(2, "Type 2"),
@@ -839,7 +846,7 @@ class ObservationalCase(TypeCase):
     endoscopemodel = models.CharField(verbose_name = "Endoscope model", max_length = 50, blank= True, null = True)
     nbi = models.IntegerField(verbose_name = "NBI/FICE/electronic chromoendoscopy*", choices = _NO_YES, blank= True, null = True)
     nbi_sano = models.IntegerField(verbose_name = "SANO", choices = _NBI_SANO, blank= True, null = True)
-    jnet = models.IntegerField(verbose_name = "JNET", choices = _NBI_SANO, blank= True, null = True)
+    jnet = models.IntegerField(verbose_name = "JNET", choices = _JNET, blank= True, null = True)
     nbi_nice = models.IntegerField(verbose_name = "NICE*", choices = _NBI_NICE, blank= True, null = True) #NICE son siglas?
     chromoendoscopy = models.IntegerField(verbose_name = "Chromoendoscopy*", choices = _NO_YES, blank= True, null = True)
     kudo = models.IntegerField(verbose_name = "Kudo", choices = _KUDO, blank= True, null = True)
@@ -990,7 +997,7 @@ class ObsinternationalCase(TypeCase):
     endoscopemodel = models.CharField(verbose_name = "Endoscope model*", max_length = 50, blank= True, null = True)
     nbi = models.IntegerField(verbose_name = "NBI/FICE*", choices = _NO_YES, blank= True, null = True)
     nbi_sano = models.IntegerField(verbose_name = "SANO*", choices = _NBI_SANO, blank= True, null = True)
-    jnet = models.IntegerField(verbose_name = "JNET", choices = _NBI_SANO, blank= True, null = True)
+    jnet = models.IntegerField(verbose_name = "JNET", choices = _JNET, blank= True, null = True)
     nbi_nice = models.IntegerField(verbose_name = "NICE*", choices = _NBI_NICE, blank= True, null = True) #NICE son siglas?
     chromoendoscopy = models.IntegerField(verbose_name = "Chromoendoscopy*", choices = _NO_YES, blank= True, null = True)
     kudo = models.IntegerField(verbose_name = "Kudo*", choices = _KUDO, blank= True, null = True)
