@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% block header_2 %}
 <link rel="stylesheet" href="{% static 'css/study_details.css' %}">
+<script src="{% static 'js/filter_by_id.js' %}"></script>
 {% endblock header_2 %}
 
 {% block content %}
@@ -9,9 +10,10 @@
 	<div class="card-corner-button green-text-dark"><a href = "{% url 'studies_app.views.study_info' study_id=study.pk %}"><i class="mdi-action-info prefix"></i></a></div>
 	<div class="card-title">Study '{{study}}' for {{user_prof}}</div>
 	<div id="studies-table" class="card-table green-text">
+    <input id="search-input" type="text" placeholder="Search by ID"/>
 	{%  for case in cases  %}
 			<a  href = "{% url 'case_edit' case_pk=case.pk study_pk=study.pk %}">
-			<div class="case card-cell">
+			<div class="case card-cell"  data-id="{{case.id_number|default_if_none:-1}}">
 
 				<div class = "card-cell-title study-name" >
 					 <span>{{case.short_name}}</span>
