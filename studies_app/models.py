@@ -813,6 +813,26 @@ _CAPS_ACCESSORIES = (
     (5, 'Thrid-eye'),
 )
 
+
+_SYDNEY = (
+	(0, "Normal/Intact SM"),
+	(1, "Partial SM coagulation"),
+	(2, "Coagulation of entire SM"),
+	(3, "MP visible, no injury"),
+	(4, "Focal loss of SM plane, MP injury"),
+	(5, "Target sign, no perforation"),
+	(6, "Perforation, no contamination"),
+	(7, "Perforation with contamination"),
+)
+
+_MUCOSAL_DEFECT_VESSELS = (
+	(0, "No"),
+	(1, "Visible intact vessels"),
+	(2, "Cut vessels"),
+	(3, "Intact and cut vessels"),
+)
+
+
 class ObservationalCase(TypeCase):
 
     date = models.DateField(verbose_name = "Date*", blank= True, null = True)
@@ -926,6 +946,10 @@ class ObservationalCase(TypeCase):
     clipping = models.IntegerField(verbose_name="Clipping*", choices=_CLIPPING, blank=True, null=True)
     surgery = models.IntegerField(verbose_name="Surgery*", choices=_SURGERY, blank=True, null=True)
     number_of_sessions = models.IntegerField(verbose_name="Number of endoscopic sessions needed*", choices = _SESSIONS_NEEDED, blank=True, null=True)
+
+    sydney = models.IntegerField(verbose_name="Sydney classification (mural injury)*", choices = _SYDNEY, blank=True, null=True)
+    mucosal_defect_vessels = models.IntegerField(verbose_name="Mucosal defect vessels*", choices = _MUCOSAL_DEFECT_VESSELS, blank=True, null=True)
+    mucosal_defect_hematoma = models.IntegerField(verbose_name="Mucosal defect hematoma/cherry red spots*", choices = _NO_YES, blank=True, null=True)
 
 
     def validate(request):
@@ -1078,6 +1102,9 @@ class ObsinternationalCase(TypeCase):
     surgery = models.IntegerField(verbose_name="Surgery*", choices=_SURGERY, blank=True, null=True)
     number_of_sessions = models.IntegerField(verbose_name="Number of endoscopic sessions needed", choices = _SESSIONS_NEEDED, blank=True, null=True)
 
+    sydney = models.IntegerField(verbose_name="Sydney classification (mural injury)", choices = _SYDNEY, blank=True, null=True)
+    mucosal_defect_vessels = models.IntegerField(verbose_name="Mucosal defect vessels", choices = _MUCOSAL_DEFECT_VESSELS, blank=True, null=True)
+    mucosal_defect_hematoma = models.IntegerField(verbose_name="Mucosal defect hematoma/cherry red spots", choices = _NO_YES, blank=True, null=True)
 
     def validate(request):
         user = UserProfile.objects.get(user = request.user)

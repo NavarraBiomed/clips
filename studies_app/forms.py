@@ -105,7 +105,8 @@ class ObservationalForm(CaseForm):
                 Row('laxative','laxative_schedule'),
                 Row('boston_right', 'boston_transverse', 'boston_left'),
                 Row('boston'),
-                Row('caps_accessories')
+                Row('caps_accessories'),
+                Row('sydney', 'mucosal_defect_vessels', 'mucosal_defect_hematoma')
 
             ),
             Fieldset('Morphology and Histology',
@@ -206,7 +207,8 @@ class ObsinternationalForm(CaseForm):
                 Row('laxative','laxative_schedule'),
                 Row('boston_right', 'boston_transverse', 'boston_left'),
                 Row('boston'),
-                Row('caps_accessories')
+                Row('caps_accessories'),
+                Row('sydney', 'mucosal_defect_vessels', 'mucosal_defect_hematoma')
 
             ),
             Fieldset('Morphology and Histology',
