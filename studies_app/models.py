@@ -415,6 +415,7 @@ class UserProfile(models.Model):
 	def __str__(self):
 		return str(self.user)
 
+	@property
 	def long_name(self):
 		if self.user.first_name and self.user.last_name:
 			return "{} {}".format(self.user.first_name, self.user.last_name)
