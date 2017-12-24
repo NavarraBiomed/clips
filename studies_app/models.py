@@ -415,6 +415,13 @@ class UserProfile(models.Model):
 	def __str__(self):
 		return str(self.user)
 
+	def long_name(self):
+		if self.user.first_name and self.user.last_name:
+			return "{} {}".format(self.user.first_name, self.user.last_name)
+		else:
+			return str(self.user)
+
+
 class TypeCase(models.Model):
     study = models.ForeignKey(Study, verbose_name="Study", related_name='cases_%(class)s')
     doctor = models.ForeignKey('UserProfile', verbose_name = "Doctor", blank= True, null = True)
@@ -574,6 +581,7 @@ class ClipsCase(TypeCase):
         case.study = study
         case.doctor = user
         case.hospital = hospital
+
 
         group = int_or_none(post['group'])
         age = int_or_none(post['age'])

@@ -7,7 +7,6 @@ from django.views.generic.edit import FormView
 
 
 def get_form_from_case(case, **kwargs ):
-    #import pdb; pdb.set_trace()
     post = kwargs.get('post', None)
     hidden_fields = kwargs.get('hidden_fields', [])
     study_type = case.study.study_type
