@@ -54,7 +54,7 @@ class ObservationalForm(CaseForm):
 
     class Meta:
         model = ObservationalCase
-        exclude = ('id_for_doctor', 'id_for_hospital')
+        exclude = ('id_for_doctor', 'id_for_hospital', 'group')
 
     template = 'studies_app/edit/observational.html'
     layout = Layout(
@@ -156,7 +156,7 @@ class ObsinternationalForm(CaseForm):
 
     class Meta:
         model = ObsinternationalCase
-        exclude = ('id_for_doctor', 'id_for_hospital')
+        exclude = ('id_for_doctor', 'id_for_hospital', 'group')
 
     template = 'studies_app/edit/observational.html'
     layout = Layout(

@@ -144,17 +144,18 @@ def case_edit(request, study_pk, case_pk):
             'breadcrumbs':breadcrumbs
             })
 
+
 @login_required
 def new_case(request, study_id):
     #Redirect to admin site if needed
     if request.user.is_superuser:
         return HttpResponseRedirect("/admin")
 
-    user = UserProfile.objects.get(user = request.user)
-    study = Study.objects.get(pk = study_id)
+    user = UserProfile.objects.get(user=request.user)
+    study = Study.objects.get(pk=study_id)
     group = random.choice([0,1])
 
-    breadcrumbs = generate_breadcrumbs(study = study, new = True)
+    breadcrumbs = generate_breadcrumbs(study=study, new=True)
 
     #get the corresponding template or the default one
     template_name = "studies_app/validation/"+study.study_type+".html"
