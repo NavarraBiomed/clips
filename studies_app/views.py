@@ -212,7 +212,7 @@ def study_json(request, study_id):
     cases = Study.objects.get(pk=study_id).get_cases().all()
     for case in cases:
         try:
-            new_case = {'clips': case.group, 'hospital': str(case.doctor.hospital),  'doctor': case.doctor.long_name() + " " + case.doctor.user.last_name}
+            new_case = {'clips': case.group, 'hospital': str(case.doctor.hospital),  'doctor': case.doctor.long_name + " " + case.doctor.user.last_name}
         except:
             raise KeyError('No user in case: ' + str(case))
         data.append(new_case)
