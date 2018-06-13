@@ -1,6 +1,5 @@
-from django.core.management.base import BaseCommand, CommandError
-from studies_app.models import *
-import json
+from django.core.management.base import BaseCommand
+from studies_app.models import Study
 import csv
 
 
@@ -31,6 +30,15 @@ class Command(BaseCommand):
                 for field in fields:
                     value = getattr(case, field.name, None)
                     if value is None:
-                        value = ""
+                        value = ''
+                    if type(value) is int and field.choices:
+                        try:
+                            value = find_value_in_tuples(field.choices, value)
+                        except Exception as e:
+                            pass
+                    if type(value) is str:
+                        value = value.replace('\r', '')
+                        value = value.replace('\n', ' ')
+                        value = value.strip()
                     row_data.append(value)
                 writer.writerow(row_data)

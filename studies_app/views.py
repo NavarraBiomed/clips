@@ -222,6 +222,13 @@ def study_json(request, study_id):
 
 @staff_member_required
 def study_export(request, study_id):
+    def find_value_in_tuples(tuples, value):
+        for tuple in tuples:
+            if tuple[0] == value:
+                return tuple[1]
+
+        return None
+
     study = Study.objects.get(pk=study_id)
     cases = study.get_cases().all()
     output = io.StringIO()
@@ -242,6 +249,15 @@ def study_export(request, study_id):
             value = getattr(case, field.name, None)
             if value is None:
                 value = ''
+            if type(value) is int and field.choices:
+                try:
+                    value = find_value_in_tuples(field.choices, value)
+                except Exception as e:
+                    pass
+            if type(value) is str:
+                value = value.replace('\r', '')
+                value = value.replace('\n', ' ')
+                value = value.strip()
             row_data.append(value)
         writer.writerow(row_data)
 
