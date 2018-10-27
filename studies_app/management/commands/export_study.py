@@ -19,6 +19,7 @@ class Command(BaseCommand):
             # Write headers
             first_case = cases[0]
             header = []
+            header.append('Case name')
             for field in first_case._meta.get_fields():
                 header.append(field.name)
 
@@ -27,6 +28,7 @@ class Command(BaseCommand):
             for case in cases:
                 fields = case._meta.get_fields()
                 row_data = []
+                row_data.append(case.short_name())
                 for field in fields:
                     value = getattr(case, field.name, None)
                     if value is None:
